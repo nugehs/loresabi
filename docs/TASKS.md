@@ -15,7 +15,11 @@
 - [ ] Add onboarding flow in Figma
 - [ ] Add saved items screen in Figma
 - [ ] Add Pro/country pack screen in Figma
-- [ ] Create Next.js project
+- [ ] Create TypeScript monorepo
+- [ ] Create Next.js web app in `apps/web`
+- [ ] Create NestJS API app in `apps/api`
+- [ ] Create shared Prisma package in `packages/database`
+- [ ] Create shared types package in `packages/shared`
 - [ ] Build static homepage from Figma
 - [ ] Build static country page from Figma
 - [ ] Build static explainer page from Figma

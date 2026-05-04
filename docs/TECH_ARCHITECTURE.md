@@ -2,7 +2,9 @@
 
 ## Recommended Stack
 
-- Frontend: Next.js + TypeScript
+- Repository: TypeScript monorepo
+- Frontend app: Next.js + TypeScript
+- Backend API: NestJS + TypeScript
 - Styling: Tailwind CSS
 - UI: custom components based on Figma, optionally shadcn/ui
 - Database: Postgres
@@ -12,10 +14,46 @@
 - Storage: Supabase Storage or Cloudflare R2
 - AI: OpenAI API first, with GPT-5 nano for cheap worker tasks and GPT-5 mini for user-facing explainers
 - Search: Postgres full-text first, vector search later
-- Jobs: Inngest or Trigger.dev
-- Hosting: Vercel
+- Jobs: BullMQ for NestJS workers, or Trigger.dev/Inngest if managed jobs are preferred
+- Hosting: Vercel for web, Render/Fly.io/Railway for API
 - Analytics: PostHog
 - Payments: Stripe later
+
+## Monorepo Structure
+
+```text
+loresabi/
+  apps/
+    web/        # Next.js public web application
+    api/        # NestJS backend API and worker entrypoint
+  packages/
+    database/   # Prisma schema and generated client
+    shared/     # Shared TypeScript types, constants, helpers
+  docs/
+```
+
+Next.js owns public pages, SEO, and the user experience. NestJS owns backend APIs, content workflows, AI orchestration, review workflows, and future billing/auth integrations.
+
+## Backend Modules
+
+Initial NestJS modules:
+
+- CountriesModule
+- ExplainersModule
+- SourcesModule
+- ImagesModule
+- TrendsModule
+- SearchModule
+- AiModule
+- ReviewModule
+
+Later NestJS modules:
+
+- UsersModule
+- BillingModule
+- SubscriptionsModule
+- AudioModule
+- NotificationsModule
 
 ## App Structure
 
