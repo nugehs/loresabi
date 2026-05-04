@@ -7,6 +7,8 @@
 - [x] Create content template for explainers
 - [x] Start Postgres with Docker and apply first Prisma migration
 - [x] Decide Supabase vs Neon for Postgres
+- [x] Lock product north star and no-drift rules
+- [x] Remove internal workflow tools from public navigation
 
 ## Next
 
@@ -73,10 +75,13 @@
 - [x] Add browser-first local country context detection
 - [x] Add attribution report
 - [x] Add internal-search trend ingestion
+- [x] Add reliable trend-source rules
+- [x] Label seed rows as editorial seed instead of live trends
 - [x] Add temporary email-based saved items flow
 - [x] Add Stripe Checkout-ready Pro foundation, parked from active build
 - [x] Add Segzy setup checklist
 - [x] Add database clear script for removing local seed/demo data when needed
+- [x] Add product north-star guardrail doc
 
 ## Working Notes
 

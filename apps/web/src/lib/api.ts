@@ -491,12 +491,50 @@ function mapTrend(trend: ApiTrend, index: number): Trend {
     country: trend.country ? mapCountry(trend.country) : null,
     rank: String(index + 1).padStart(2, "0"),
     topic: staticTrend?.topic ?? titleCase(trend.query),
-    category: staticTrend?.category ?? titleCase(trend.source.toLowerCase()),
-    change: staticTrend?.change ?? (score ? `${score}/100` : "New"),
-    reason:
-      staticTrend?.reason ??
-      "A tracked curiosity signal that should be reviewed, sourced, and turned into a clear explainer.",
+    category: trendSourceLabel(trend.source),
+    change: trendSignalLabel(trend.source, score),
+    reason: trendReason(trend.source, staticTrend?.reason),
   };
+}
+
+function trendSourceLabel(source: string) {
+  switch (source) {
+    case "GOOGLE_TRENDS":
+      return "Google Trends";
+    case "NEWS":
+      return "News signal";
+    case "SOCIAL":
+      return "Social signal";
+    case "INTERNAL_SEARCH":
+      return "Internal search";
+    case "CURATED":
+      return "Editorial seed";
+    case "STATIC":
+      return "Prototype seed";
+    default:
+      return titleCase(source.toLowerCase());
+  }
+}
+
+function trendSignalLabel(source: string, score: number) {
+  if (source === "CURATED" || source === "STATIC") {
+    return "Seed";
+  }
+
+  return score ? `${score}/100` : "New";
+}
+
+function trendReason(source: string, fallbackReason?: string) {
+  if (source === "CURATED" || source === "STATIC") {
+    return fallbackReason
+      ? `Starter signal awaiting a live reliable source: ${fallbackReason}`
+      : "Starter signal awaiting a live reliable source.";
+  }
+
+  return (
+    fallbackReason ??
+    "A tracked curiosity signal that should be reviewed, sourced, and turned into a clear explainer."
+  );
 }
 
 function mapStaticExplainer(

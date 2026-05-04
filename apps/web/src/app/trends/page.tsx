@@ -1,6 +1,15 @@
+import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { Card, Container, Eyebrow, PageShell } from "@/components/ui";
 import { getTrends } from "@/lib/api";
+
+const sourceNotes = [
+  ["Google Trends", "Real search demand. Best source, but official API access is alpha/approval-based."],
+  ["Wikipedia pageviews", "Public proxy for what people are reading and looking up."],
+  ["News signal", "Current-affairs attention from trusted news-scale datasets."],
+  ["Internal search", "What LoreSabi users are asking inside the product."],
+  ["Editorial seed", "Starter content only. Not presented as live trending demand."],
+];
 
 export default async function TrendsPage() {
   const trends = await getTrends();
@@ -9,21 +18,21 @@ export default async function TrendsPage() {
     <PageShell>
       <SiteHeader />
       <Container className="py-14 lg:py-20">
-        <Eyebrow>Trends dashboard</Eyebrow>
-        <h1 className="mt-3 max-w-4xl text-5xl font-bold tracking-tight">What people are searching, reading, and talking about by country.</h1>
+        <Eyebrow>Curiosity signals</Eyebrow>
+        <h1 className="mt-3 max-w-4xl text-5xl font-bold tracking-tight">Questions by source, not guesswork.</h1>
         <p className="mt-6 max-w-3xl text-xl leading-8 text-[#3f4842]">
-          This page now reads from the LoreSabi API when it is running, then falls back to the MVP trend structure when the API is offline.
+          LoreSabi should only call something a trend when the source is visible. Editorial seed rows are starter content until live search, reading, news, or internal-search signals are connected.
         </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          {['Global', 'Nigeria', 'History', 'Current affairs', 'Pop culture'].map((filter, index) => (
-            <span key={filter} className={`rounded border px-4 py-2 text-sm font-bold ${index === 1 ? 'border-[#151917] bg-[#151917] text-white' : 'border-[#b9c3ba] bg-white text-[#151917]'}`}>{filter}</span>
-          ))}
-        </div>
 
         <div className="mt-10 grid gap-5 lg:grid-cols-[1fr_360px]">
           <div className="grid gap-4">
             {trends.map((item) => (
-              <Card key={`${item.rank}-${item.topic}`} className={item.category === 'Current affairs' ? 'bg-[#fff7e8]' : 'bg-white'}>
+              <Link
+                key={`${item.rank}-${item.topic}`}
+                className="block rounded-lg outline-offset-4 focus:outline focus:outline-4 focus:outline-[#ffdd00]"
+                href={`/search?q=${encodeURIComponent(item.topic)}&country=${item.country?.slug ?? "nigeria"}`}
+              >
+                <Card className={item.category === "Editorial seed" ? "bg-[#fff7e8]" : "bg-white"}>
                 <div className="grid gap-4 md:grid-cols-[80px_1fr_150px_90px] md:items-center">
                   <p className="text-2xl font-bold text-[#00703c]">{item.rank}</p>
                   <div>
@@ -33,15 +42,21 @@ export default async function TrendsPage() {
                   <p className="font-bold text-[#3f4842]">{item.category}</p>
                   <p className="text-right text-lg font-bold text-[#00703c]">{item.change}</p>
                 </div>
-              </Card>
+                </Card>
+              </Link>
             ))}
           </div>
           <Card className="bg-[#151917] text-white">
-            <p className="font-bold text-[#ffdd00]">Pro layer later</p>
-            <h2 className="mt-3 text-3xl font-bold">Save the deeper country pulse.</h2>
-            <p className="mt-5 leading-7 text-[#dce5dc]">
-              Advanced trend alerts, country packs, offline reading, school packs, and diaspora guides can sit here when monetization is ready.
-            </p>
+            <p className="font-bold text-[#ffdd00]">Source rules</p>
+            <h2 className="mt-3 text-3xl font-bold">No source, no trend claim.</h2>
+            <div className="mt-5 grid gap-4">
+              {sourceNotes.map(([source, note]) => (
+                <div key={source}>
+                  <p className="font-bold">{source}</p>
+                  <p className="mt-1 leading-7 text-[#dce5dc]">{note}</p>
+                </div>
+              ))}
+            </div>
           </Card>
         </div>
       </Container>

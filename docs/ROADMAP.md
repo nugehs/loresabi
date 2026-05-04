@@ -54,6 +54,7 @@
 
 - [x] Start with manually curated trends
 - [x] Add internal search-log trend ingestion
+- [x] Label seeded trend rows as editorial seeds, not live demand
 - [ ] Add Wikipedia pageview ingestion
 - [ ] Add Google Trends or BigQuery exploration
 - [ ] Add GDELT or NewsAPI current affairs ingestion

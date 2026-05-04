@@ -104,7 +104,7 @@ export async function CountryPage({ countrySlug }: CountryPageProps) {
           </div>
         </Card>
         <Card className="bg-[#fbfcf8]">
-          <h2 className="text-3xl font-bold">What people are searching</h2>
+          <h2 className="text-3xl font-bold">Curiosity signals</h2>
           <div className="mt-5 grid gap-4">
             {country.trends.length ? (
               country.trends.map((item) => (
@@ -121,6 +121,9 @@ export async function CountryPage({ countrySlug }: CountryPageProps) {
                       {item.change}
                     </span>
                   </div>
+                  <p className="mt-1 text-sm font-bold text-[#00703c]">
+                    {item.category}
+                  </p>
                   <p className="mt-2 text-sm leading-6 text-[#3f4842]">
                     {item.reason}
                   </p>

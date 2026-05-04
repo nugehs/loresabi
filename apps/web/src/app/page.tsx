@@ -90,14 +90,18 @@ export default async function Home() {
         <Container>
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-3xl">
-              <Eyebrow>Trending curiosity</Eyebrow>
+              <Eyebrow>Curiosity signals</Eyebrow>
               <h2 className="mt-3 text-4xl font-bold tracking-tight">What people are trying to understand now</h2>
             </div>
             <TextLink href="/trends">View all trends</TextLink>
           </div>
           <div className="mt-8 grid gap-5 lg:grid-cols-4">
             {trendingItems.map((item) => (
-              <Card key={`${item.country?.slug ?? "global"}-${item.topic}`} className="bg-[#fbfcf8]">
+              <Link
+                key={`${item.country?.slug ?? "global"}-${item.topic}`}
+                className="rounded-lg border border-[#d8ded6] bg-[#fbfcf8] p-6 shadow-sm hover:border-[#00703c]"
+                href={`/search?q=${encodeURIComponent(item.topic)}&country=${item.country?.slug ?? "nigeria"}`}
+              >
                 <div className="flex items-start justify-between gap-4">
                   <p className="text-sm font-bold text-[#5d665f]">{item.country?.name ?? "Global"}</p>
                   <p className="rounded bg-[#e8f2ec] px-2 py-1 text-sm font-bold text-[#00703c]">{item.change}</p>
@@ -105,7 +109,7 @@ export default async function Home() {
                 <h3 className="mt-4 text-2xl font-bold">{item.topic}</h3>
                 <p className="mt-2 text-sm font-bold text-[#00703c]">{item.category}</p>
                 <p className="mt-4 leading-7 text-[#3f4842]">{item.reason}</p>
-              </Card>
+              </Link>
             ))}
           </div>
         </Container>
@@ -131,18 +135,6 @@ export default async function Home() {
               </Card>
             ))}
           </div>
-        </Container>
-      </section>
-
-      <section className="bg-[#151917] py-14 text-white">
-        <Container className="grid gap-8 lg:grid-cols-[1fr_0.8fr]">
-          <div>
-            <p className="font-bold text-[#ffdd00]">Monetization later</p>
-            <h2 className="mt-3 text-4xl font-bold tracking-tight">Keep basic understanding free. Charge for depth.</h2>
-          </div>
-          <p className="text-lg leading-8 text-[#dce5dc]">
-            Pro can become saved country packs, offline explainers, audio briefings, school packs, diaspora guides, and advanced trend alerts. The free product should still answer the basic question clearly.
-          </p>
         </Container>
       </section>
     </PageShell>

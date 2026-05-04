@@ -32,6 +32,19 @@ The product returns structured explainers with short answers, images, timelines,
 
 Most news apps explain what happened. Most country apps show static facts. LoreSabi explains what shaped a country and what people are curious about now.
 
+## North Star
+
+The product loop is:
+
+```text
+Question or trend
+-> simple context answer
+-> source/review status
+-> related questions
+```
+
+Internal editorial, attribution, draft, and ops tools support this loop. They are not the public product.
+
 ## Product Principles
 
 - Start with the simple answer.
@@ -40,6 +53,8 @@ Most news apps explain what happened. Most country apps show static facts. LoreS
 - Separate fact, opinion, uncertainty, and speculation.
 - Keep AI behind the scenes, not as the main user interface.
 - Make the product feel useful, trustworthy, and culturally aware.
+- Do not let country pages become static encyclopedia profiles.
+- Do not expose internal workflow as the primary user experience.
 
 ## MVP Countries
 

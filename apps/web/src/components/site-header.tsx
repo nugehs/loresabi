@@ -1,15 +1,10 @@
 import Link from "next/link";
 
 const navItems = [
-  { href: "/countries", label: "Countries" },
-  { href: "/trends", label: "Trends" },
-  { href: "/countries/nigeria/old-nigerian-flag", label: "Explainers" },
-  { href: "/editorial", label: "Editorial" },
-  { href: "/drafts", label: "Drafts" },
-  { href: "/attribution", label: "Attribution" },
-  { href: "/ops", label: "Ops" },
-  { href: "/saved", label: "Saved" },
   { href: "/search", label: "Search" },
+  { href: "/trends", label: "Trends" },
+  { href: "/countries", label: "Countries" },
+  { href: "/saved", label: "Saved" },
 ];
 
 export function SiteHeader() {
