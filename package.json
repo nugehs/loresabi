@@ -17,9 +17,11 @@
     "build:api": "npm run build -w @loresabi/api",
     "db:generate": "npm run db:generate -w @loresabi/database",
     "db:migrate": "npm run db:migrate -w @loresabi/database",
+    "db:deploy": "npm run db:deploy -w @loresabi/database",
     "db:studio": "npm run db:studio -w @loresabi/database",
     "db:validate": "npm run db:validate -w @loresabi/database",
-    "db:seed": "npm run db:seed -w @loresabi/database"
+    "db:seed": "npm run db:seed -w @loresabi/database",
+    "db:clear": "npm run db:clear -w @loresabi/database"
   },
   "repository": {
     "type": "git",
@@ -40,5 +42,8 @@
   ],
   "engines": {
     "node": "22.x"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
   }
 }

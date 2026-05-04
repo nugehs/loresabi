@@ -2,30 +2,47 @@
 
 ## Decision
 
-LoreSabi should start with an OpenAI-first model stack:
+LoreSabi should use a provider-based AI layer.
 
-- Cheap worker model: GPT-5 nano
-- Main explainer model: GPT-5 mini
-- Optional fallback later: Gemini Flash-Lite, DeepSeek V4 Flash, or Groq-hosted open models
+Current local provider:
 
-This keeps the MVP simple, reliable, and cost-conscious without locking the product into a single model forever.
+- DeepSeek API
+- Default model: `deepseek-v4-flash`
 
-## Why OpenAI First
+Later optional provider:
 
-OpenAI is the best first choice for the MVP because it gives LoreSabi:
+- OpenAI API
+- Main explainer model: `gpt-5-mini`
+- Cheap worker model: decide when background workers are active
 
-- Strong structured outputs
-- Good instruction following
-- Good developer experience
-- Easy model upgrades
-- Reliable enough quality for user-facing explainers
-- A cheap nano model for background work
+This keeps the product moving now without making the code depend permanently on one AI vendor.
 
-The goal is not to chase the absolute cheapest token price on day one. The goal is to keep costs low while avoiding messy integration and quality problems.
+## Why DeepSeek Now
+
+DeepSeek is the current practical choice because the key is already available and the API is OpenAI-compatible enough for the explainer draft flow.
+
+Use it for:
+
+- Internal draft generation
+- Short explainer starting points
+- Metadata and category suggestions later
+
+DeepSeek output must still be treated as draft material. Published current affairs, politics, history, ethnicity, religion, public health, and conflict topics need source review before going live.
+
+## OpenAI Later
+
+OpenAI can be added later by setting `OPENAI_API_KEY` and switching `AI_PROVIDER=openai`.
+
+Use OpenAI for:
+
+- Higher quality rewrite passes
+- More sensitive explainers
+- Structured output-heavy workers
+- Production content review workflows
 
 ## Model Routing
 
-Use GPT-5 nano for cheap, high-volume internal tasks:
+Use the cheapest reliable model for internal worker tasks:
 
 - Classify user search queries
 - Detect country, topic, and category
@@ -35,7 +52,7 @@ Use GPT-5 nano for cheap, high-volume internal tasks:
 - Normalize metadata
 - Draft SEO titles and descriptions
 
-Use GPT-5 mini for user-facing content:
+Use a stronger model for user-facing content:
 
 - Short answers
 - Full explainers
@@ -45,23 +62,14 @@ Use GPT-5 mini for user-facing content:
 - Sensitive current affairs drafts
 - Higher-quality rewrite passes
 
-Use a stronger model later only when needed:
-
-- High-risk current affairs
-- Politically sensitive topics
-- Complex history involving conflict, ethnicity, or religion
-- Final editorial review for premium content
-
 ## Cost Control Rules
 
 - Always check the database before generating.
 - Store generated explainers instead of regenerating on every request.
 - Keep source extraction separate from final writing.
-- Use GPT-5 nano for classification and tagging.
-- Use GPT-5 mini only when the output is user-facing or quality-sensitive.
 - Use batch jobs for offline content generation when possible.
-- Cache stable system prompts and reusable country context.
-- Track token usage per task type from day one.
+- Cache stable prompts and reusable country context.
+- Track token usage per task type before public launch.
 
 ## Content Safety Rules
 
@@ -71,7 +79,7 @@ For sensitive topics, the model must:
 - Separate facts from interpretation.
 - Avoid inflammatory wording.
 - Show uncertainty where claims are disputed.
-- Mark drafts as `needs_review` before publication.
+- Keep drafts in review before publication.
 
 Sensitive topics include:
 
@@ -85,32 +93,20 @@ Sensitive topics include:
 - Active protests
 - Breaking news
 
-## Fallback Strategy
+## Environment Variables
 
-Do not add fallback providers in the MVP unless OpenAI cost or availability becomes a real problem.
-
-Possible future fallbacks:
-
-- Gemini Flash-Lite for cheap multimodal processing.
-- DeepSeek V4 Flash for low-cost draft generation.
-- Groq-hosted open models for very fast simple classification.
-
-Model fallback should be implemented behind an internal provider interface so the app can route tasks without changing product code.
-
-## MVP Environment Variables
-
-Expected starting variables:
+Current local variables:
 
 ```text
-OPENAI_API_KEY=
-AI_CHEAP_MODEL=gpt-5-nano
-AI_MAIN_MODEL=gpt-5-mini
+AI_PROVIDER=deepseek
+DEEPSEEK_API_KEY=
+DEEPSEEK_BASE_URL=https://api.deepseek.com
+DEEPSEEK_MODEL=deepseek-v4-flash
 ```
 
 Later optional variables:
 
 ```text
-GEMINI_API_KEY=
-DEEPSEEK_API_KEY=
-GROQ_API_KEY=
+OPENAI_API_KEY=
+AI_MAIN_MODEL=gpt-5-mini
 ```

@@ -9,7 +9,6 @@ const navItems = [
   { href: "/attribution", label: "Attribution" },
   { href: "/ops", label: "Ops" },
   { href: "/saved", label: "Saved" },
-  { href: "/pro", label: "Pro" },
   { href: "/search", label: "Search" },
 ];
 

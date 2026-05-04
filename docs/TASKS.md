@@ -30,13 +30,10 @@
 - [x] Add image attribution pipeline
 - [x] Add trends ingestion
 - [x] Add accounts and saved items
-- [ ] Add live Stripe and Pro features
 
 ## Waiting On Segzy
 
 - [ ] Create production Neon database and provide `DATABASE_URL`
-- [ ] Create OpenAI API key and provide `OPENAI_API_KEY`
-- [ ] Create Stripe account, product, and price; provide `STRIPE_SECRET_KEY` and `STRIPE_PRICE_ID`
 - [ ] Create Vercel project and add environment variables
 - [ ] Point `loresabi.com` DNS when ready
 
@@ -48,6 +45,9 @@
 - [ ] Add onboarding flow in Figma
 - [ ] Add saved items screen in Figma
 - [ ] Add Pro/country pack screen in Figma
+- [ ] Add live Stripe and Pro features
+- [ ] Create Stripe account, product, and price; provide `STRIPE_SECRET_KEY` and `STRIPE_PRICE_ID`
+- [ ] Create OpenAI API key and provide `OPENAI_API_KEY` if switching from DeepSeek later
 
 ## Done
 
@@ -57,7 +57,7 @@
 - [x] Created project tracking docs
 - [x] Captured desktop web layout spec
 - [x] Selected working name and domain target: LoreSabi / loresabi.com
-- [x] Chose OpenAI-first AI model strategy
+- [x] Chose provider-based AI model strategy with DeepSeek active first
 - [x] Added GOV.UK-inspired design foundation
 - [x] Added Docker development foundation
 - [x] Added initial Prisma schema and client package scripts
@@ -68,11 +68,13 @@
 - [x] Wire web pages to database-backed API
 - [x] Add internal editorial queue for Nigeria explainers
 - [x] Add AI draft desk with OpenAI-ready fallback
+- [x] Add DeepSeek-first draft generation with OpenAI optional later
 - [x] Add attribution report
 - [x] Add internal-search trend ingestion
 - [x] Add temporary email-based saved items flow
-- [x] Add Stripe Checkout-ready Pro foundation
+- [x] Add Stripe Checkout-ready Pro foundation, parked from active build
 - [x] Add Segzy setup checklist
+- [x] Add database clear script for removing local seed/demo data when needed
 
 ## Working Notes
 

@@ -5,10 +5,10 @@ import { TrendsIngestion } from "./trends-ingestion";
 
 const userTasks = [
   "Create production Postgres database and set DATABASE_URL",
-  "Create OpenAI API key and set OPENAI_API_KEY",
+  "Add DeepSeek AI variables to production when deploying",
   "Create Vercel project and add environment variables",
   "Point loresabi.com DNS when ready",
-  "Create Stripe account before Pro features go live",
+  "OpenAI and Stripe stay parked until you decide to use them",
 ];
 
 export default function OpsPage() {

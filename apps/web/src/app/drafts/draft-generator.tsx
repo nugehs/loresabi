@@ -5,7 +5,7 @@ import { FormEvent, useState } from "react";
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
 type DraftResponse = {
-  mode: "openai" | "local_fallback" | "existing_published";
+  mode: "deepseek" | "openai" | "local_fallback" | "existing_published";
   explainer: {
     slug: string;
     title: string;
@@ -80,11 +80,13 @@ export function DraftGenerator() {
       {draft ? (
         <div className="mt-6 border-t border-[#d8ded6] pt-5">
           <p className="text-sm font-bold uppercase text-[#00703c]">
-            {draft.mode === "openai"
-              ? "OpenAI draft"
-              : draft.mode === "existing_published"
-                ? "Existing published explainer"
-                : "Local fallback draft"}
+            {draft.mode === "deepseek"
+              ? "DeepSeek draft"
+              : draft.mode === "openai"
+                ? "OpenAI draft"
+                : draft.mode === "existing_published"
+                  ? "Existing published explainer"
+                  : "Local fallback draft"}
           </p>
           <h2 className="mt-2 text-2xl font-bold">{draft.explainer.title}</h2>
           <p className="mt-3 leading-7 text-[#3f4842]">

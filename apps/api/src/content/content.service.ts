@@ -34,6 +34,12 @@ type GeneratedDraft = {
   readingTime: number;
 };
 
+type DraftMode = 'deepseek' | 'openai' | 'local_fallback';
+
+type DraftGeneration = GeneratedDraft & {
+  mode: DraftMode;
+};
+
 @Injectable()
 export class ContentService {
   constructor(private readonly prisma: PrismaService) {}
@@ -209,7 +215,7 @@ export class ContentService {
     });
 
     return {
-      mode: process.env.OPENAI_API_KEY ? 'openai' : 'local_fallback',
+      mode: generated.mode,
       explainer: this.mapExplainer(explainer),
       nextSteps: [
         'Attach source links',
@@ -650,11 +656,82 @@ export class ContentService {
     question: string,
     countryName: string,
     request: DraftRequest,
-  ): Promise<GeneratedDraft> {
-    if (!process.env.OPENAI_API_KEY) {
-      return this.generateLocalDraft(question, request);
+  ): Promise<DraftGeneration> {
+    const preferredProvider = process.env.AI_PROVIDER?.trim().toLowerCase();
+
+    if (preferredProvider === 'openai' && process.env.OPENAI_API_KEY) {
+      return this.generateOpenAiDraft(question, countryName, request);
     }
 
+    if (process.env.DEEPSEEK_API_KEY && preferredProvider !== 'openai') {
+      return this.generateDeepSeekDraft(question, countryName, request);
+    }
+
+    if (process.env.OPENAI_API_KEY) {
+      return this.generateOpenAiDraft(question, countryName, request);
+    }
+
+    return this.generateLocalDraftGeneration(question, request);
+  }
+
+  private async generateDeepSeekDraft(
+    question: string,
+    countryName: string,
+    request: DraftRequest,
+  ): Promise<DraftGeneration> {
+    const baseUrl = (
+      process.env.DEEPSEEK_BASE_URL ?? 'https://api.deepseek.com'
+    ).replace(/\/+$/, '');
+
+    try {
+      const response = await fetch(`${baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: process.env.DEEPSEEK_MODEL ?? 'deepseek-v4-flash',
+          messages: [
+            {
+              role: 'system',
+              content:
+                'You write LoreSabi explainer drafts. Return only valid JSON with title, summary, body, category, and readingTime. Keep it plain, sourced-sounding, cautious, and mark no unsourced claim as final.',
+            },
+            {
+              role: 'user',
+              content: `Country: ${countryName}\nQuestion: ${question}\nAllowed categories: ${Object.values(ExplainerCategory).join(', ')}`,
+            },
+          ],
+          response_format: { type: 'json_object' },
+          thinking: { type: 'disabled' },
+          stream: false,
+        }),
+      });
+
+      if (!response.ok) {
+        return this.generateLocalDraftGeneration(question, request);
+      }
+
+      const data = (await response.json()) as {
+        choices?: Array<{ message?: { content?: string | null } }>;
+      };
+      const parsed = parseDraftJson(data.choices?.[0]?.message?.content);
+
+      return {
+        ...buildGeneratedDraft(parsed, question, request),
+        mode: 'deepseek',
+      };
+    } catch {
+      return this.generateLocalDraftGeneration(question, request);
+    }
+  }
+
+  private async generateOpenAiDraft(
+    question: string,
+    countryName: string,
+    request: DraftRequest,
+  ): Promise<DraftGeneration> {
     try {
       const response = await fetch('https://api.openai.com/v1/responses', {
         method: 'POST',
@@ -671,28 +748,29 @@ export class ContentService {
       });
 
       if (!response.ok) {
-        return this.generateLocalDraft(question, request);
+        return this.generateLocalDraftGeneration(question, request);
       }
 
       const data = (await response.json()) as { output_text?: string };
-      const parsed = JSON.parse(
-        data.output_text ?? '{}',
-      ) as Partial<GeneratedDraft>;
+      const parsed = parseDraftJson(data.output_text);
 
       return {
-        title: parsed.title?.trim() || normalizeTitle(question),
-        summary:
-          parsed.summary?.trim() ||
-          `${normalizeTitle(question)} needs a clear short answer and source review.`,
-        body:
-          parsed.body?.trim() ||
-          `Draft brief: answer "${question}" in plain English, then add source-backed context before publication.`,
-        category: normalizeCategory(parsed.category ?? request.category),
-        readingTime: parsed.readingTime ?? 3,
+        ...buildGeneratedDraft(parsed, question, request),
+        mode: 'openai',
       };
     } catch {
-      return this.generateLocalDraft(question, request);
+      return this.generateLocalDraftGeneration(question, request);
     }
+  }
+
+  private generateLocalDraftGeneration(
+    question: string,
+    request: DraftRequest,
+  ): DraftGeneration {
+    return {
+      ...this.generateLocalDraft(question, request),
+      mode: 'local_fallback',
+    };
   }
 
   private generateLocalDraft(
@@ -742,6 +820,58 @@ function normalizeCategory(value?: string) {
   }
 
   return ExplainerCategory.HISTORY;
+}
+
+function parseDraftJson(value?: string | null) {
+  if (!value) {
+    return {};
+  }
+
+  const trimmed = value
+    .trim()
+    .replace(/^```(?:json)?/i, '')
+    .replace(/```$/i, '')
+    .trim();
+  const start = trimmed.indexOf('{');
+  const end = trimmed.lastIndexOf('}');
+
+  if (start === -1 || end === -1 || end <= start) {
+    return {};
+  }
+
+  try {
+    return JSON.parse(trimmed.slice(start, end + 1)) as Record<string, unknown>;
+  } catch {
+    return {};
+  }
+}
+
+function buildGeneratedDraft(
+  parsed: Record<string, unknown>,
+  question: string,
+  request: DraftRequest,
+): GeneratedDraft {
+  const title = stringValue(parsed.title) || normalizeTitle(question);
+  const readingTime = Number(parsed.readingTime);
+
+  return {
+    title,
+    summary:
+      stringValue(parsed.summary) ||
+      `${title} needs a clear short answer and source review.`,
+    body:
+      stringValue(parsed.body) ||
+      `Draft brief: answer "${question}" in plain English, then add source-backed context before publication.`,
+    category: normalizeCategory(
+      stringValue(parsed.category) || request.category,
+    ),
+    readingTime:
+      Number.isFinite(readingTime) && readingTime > 0 ? readingTime : 3,
+  };
+}
+
+function stringValue(value: unknown) {
+  return typeof value === 'string' ? value.trim() : '';
 }
 
 function normalizeEmail(value: string) {

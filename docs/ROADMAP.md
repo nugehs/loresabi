@@ -60,7 +60,7 @@
 - [ ] Classify trends by country and category
 - [ ] Connect trends to explainers
 
-## Phase 7: Monetization
+## Phase 7: Monetization - Parked
 
 - [ ] Define Pro feature set
 - [ ] Design Pro screen
@@ -69,6 +69,8 @@
 - [ ] Add saved country packs
 - [ ] Add audio briefings
 - [ ] Explore school/university licensing
+
+Payment work is parked until the core knowledge product and launch setup are ready.
 
 ## Phase 8: Launch
 

@@ -12,7 +12,7 @@
 - ORM: Prisma
 - Auth: Clerk or Supabase Auth later
 - Storage: Supabase Storage or Cloudflare R2
-- AI: OpenAI API first, with GPT-5 nano for cheap worker tasks and GPT-5 mini for user-facing explainers
+- AI: provider-based API layer, DeepSeek active locally first, OpenAI optional later
 - Search: Postgres full-text first, vector search later
 - Jobs: BullMQ for NestJS workers, or Trigger.dev/Inngest if managed jobs are preferred
 - Hosting: Vercel for web, Render/Fly.io/Railway for API
@@ -151,14 +151,14 @@ Later workers:
 
 LoreSabi should use a tiered model setup instead of one model for every task.
 
-Default provider:
+Current provider:
 
-- OpenAI
+- DeepSeek
 
 Default models:
 
-- GPT-5 nano for cheap, high-volume worker tasks.
-- GPT-5 mini for user-facing explainers and sensitive drafting.
+- `deepseek-v4-flash` for first-pass internal drafts.
+- OpenAI `gpt-5-mini` later for higher-quality user-facing or sensitive drafting.
 
 Use GPT-5 nano for:
 
