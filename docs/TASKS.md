@@ -77,6 +77,7 @@
 - [x] Add internal-search trend ingestion
 - [x] Add reliable trend-source rules
 - [x] Label seed rows as editorial seed instead of live trends
+- [x] Simplify public product surface around country questions
 - [x] Add temporary email-based saved items flow
 - [x] Add Stripe Checkout-ready Pro foundation, parked from active build
 - [x] Add Segzy setup checklist

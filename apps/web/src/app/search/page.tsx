@@ -20,7 +20,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     getCountry(country),
   ]);
   const bestAnswer = results.explainers[0];
-  const draftHref = `/drafts?q=${encodeURIComponent(query)}&country=${encodeURIComponent(country)}`;
   const trackedTrend = trends.find(
     (item) => item.topic.toLowerCase() === query.trim().toLowerCase(),
   );
@@ -29,10 +28,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     <PageShell>
       <SiteHeader />
       <Container className="py-14 lg:py-20">
-        <Eyebrow>Search</Eyebrow>
-        <h1 className="mt-3 max-w-4xl text-5xl font-bold tracking-tight">Search anything about a country.</h1>
+        <Eyebrow>Ask LoreSabi</Eyebrow>
+        <h1 className="mt-3 max-w-4xl text-5xl font-bold tracking-tight">Ask a country question.</h1>
         <p className="mt-6 max-w-3xl text-xl leading-8 text-[#3f4842]">
-          Search now checks the LoreSabi API for existing country explainers and logs curiosity signals for later editorial review.
+          If LoreSabi has a reviewed answer, you get it first. If not, the question becomes a signal for what should be explained next.
         </p>
 
         <form className="mt-10 max-w-3xl" role="search" aria-label="Search LoreSabi" action="/search">
@@ -65,21 +64,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                     <p className="mt-4 text-lg leading-8 text-[#3f4842]">
                       LoreSabi has logged “{trackedTrend.topic}” as a{" "}
                       {countryDetail?.name ?? "country"} curiosity signal, but
-                      there is no source-reviewed explainer published for it
-                      yet.
+                      there is no reviewed answer for it yet.
                     </p>
                     <p className="mt-4 rounded bg-[#fff7e8] px-4 py-3 font-semibold text-[#8a4b00]">
                       {trackedTrend.reason}
                     </p>
                     <div className="mt-6 flex flex-wrap gap-4">
-                      <PrimaryLink href={draftHref}>
-                        Generate editorial draft
-                      </PrimaryLink>
                       <Link
                         className="font-bold text-[#005ea5] underline underline-offset-4"
                         href={`/countries/${country}`}
                       >
-                        Back to {countryDetail?.name ?? "country"} context
+                        Back to {countryDetail?.name ?? "country"} questions
                       </Link>
                     </div>
                   </>
@@ -90,13 +85,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                     </h2>
                     <p className="mt-4 text-lg leading-8 text-[#3f4842]">
                       LoreSabi found no source-reviewed explainer for this
-                      country yet. This search has still been logged as a
-                      curiosity signal for editorial review.
+                      country yet. This question has been tracked as a signal
+                      for what should be explained next.
                     </p>
                     {query ? (
                       <div className="mt-6">
-                        <PrimaryLink href={draftHref}>
-                          Generate editorial draft
+                        <PrimaryLink href={`/countries/${country}`}>
+                          Back to {countryDetail?.name ?? "country"} questions
                         </PrimaryLink>
                       </div>
                     ) : null}

@@ -44,8 +44,8 @@ export async function CountryPage({ countrySlug }: CountryPageProps) {
     <PageShell>
       <SiteHeader />
       <section className="border-b border-[#d8ded6] bg-[#e8f2ec]">
-        <Container className="grid gap-8 py-12 lg:grid-cols-[0.75fr_1.25fr] lg:py-16">
-          <div>
+        <Container className="grid gap-8 py-12 lg:grid-cols-[180px_1fr] lg:py-16">
+          <div aria-hidden="true">
             {country.slug === "nigeria" ? (
               <NigeriaFlag className="h-24 w-40" />
             ) : (
@@ -53,14 +53,15 @@ export async function CountryPage({ countrySlug }: CountryPageProps) {
                 {country.iso2 ?? country.name.slice(0, 2).toUpperCase()}
               </div>
             )}
-            <Eyebrow>{country.name} context guide</Eyebrow>
-            <h1 className="mt-3 text-6xl font-bold tracking-tight">
-              {country.name}
-            </h1>
           </div>
-          <div className="max-w-3xl self-end">
-            <p className="text-2xl font-semibold leading-9 text-[#26312b]">
-              {country.summary}
+          <div className="max-w-4xl">
+            <Eyebrow>{country.name}</Eyebrow>
+            <h1 className="mt-3 text-5xl font-bold tracking-tight md:text-6xl">
+              What are people asking about {country.name}?
+            </h1>
+            <p className="mt-6 max-w-3xl text-xl leading-8 text-[#26312b]">
+              Start with a question. LoreSabi gives the simple answer when one
+              exists, and tracks unanswered questions as signals.
             </p>
             <ViewerContextBadge
               contentSource={
@@ -68,13 +69,35 @@ export async function CountryPage({ countrySlug }: CountryPageProps) {
               }
               initialCountry={viewer.country}
             />
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                className="rounded border border-[#151917] bg-[#151917] px-4 py-2 text-sm font-bold text-white"
-                href={`/search?q=${encodeURIComponent(country.name)}&country=${country.slug}`}
-              >
+
+            <form
+              action="/search"
+              aria-label={`Search ${country.name}`}
+              className="mt-8 max-w-3xl"
+              role="search"
+            >
+              <label className="mb-3 block text-lg font-bold" htmlFor="q">
                 Ask about {country.name}
-              </Link>
+              </label>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <input
+                  className="min-h-14 flex-1 rounded border-2 border-[#151917] bg-white px-4 text-lg outline-offset-4 placeholder:text-[#626b65] focus:outline focus:outline-4 focus:outline-[#ffdd00]"
+                  id="q"
+                  name="q"
+                  placeholder={`Try: Why is ${country.name} in the news?`}
+                  type="search"
+                />
+                <input name="country" type="hidden" value={country.slug} />
+                <button
+                  className="min-h-14 rounded bg-[#00703c] px-7 text-lg font-bold text-white outline-offset-4 hover:bg-[#005a30] focus:outline focus:outline-4 focus:outline-[#ffdd00]"
+                  type="submit"
+                >
+                  Search
+                </button>
+              </div>
+            </form>
+
+            <div className="mt-8 flex flex-wrap gap-3">
               {questionFilters.map((filter) => (
                 <Link
                   key={filter.label}
@@ -89,22 +112,12 @@ export async function CountryPage({ countrySlug }: CountryPageProps) {
         </Container>
       </section>
 
-      <Container className="grid gap-8 py-14 lg:grid-cols-[1fr_0.9fr]">
-        <Card>
-          <h2 className="text-3xl font-bold">60-second {country.name}</h2>
-          <p className="mt-5 text-lg leading-8 text-[#3f4842]">
-            {country.summary}
-          </p>
-          <div className="mt-6">
-            <TextLink
-              href={`/search?q=${encodeURIComponent(`What should I know about ${country.name}?`)}&country=${country.slug}`}
-            >
-              Ask a plain-English question
-            </TextLink>
-          </div>
-        </Card>
+      <Container className="grid gap-8 py-14 lg:grid-cols-[1fr_0.8fr]">
         <Card className="bg-[#fbfcf8]">
           <h2 className="text-3xl font-bold">Curiosity signals</h2>
+          <p className="mt-3 leading-7 text-[#3f4842]">
+            These are questions or topics to explain, labelled by source.
+          </p>
           <div className="mt-5 grid gap-4">
             {country.trends.length ? (
               country.trends.map((item) => (
@@ -140,6 +153,19 @@ export async function CountryPage({ countrySlug }: CountryPageProps) {
             )}
           </div>
         </Card>
+        <Card>
+          <h2 className="text-3xl font-bold">Country context</h2>
+          <p className="mt-5 text-lg leading-8 text-[#3f4842]">
+            {country.summary}
+          </p>
+          <div className="mt-6">
+            <TextLink
+              href={`/search?q=${encodeURIComponent(`What should I know about ${country.name}?`)}&country=${country.slug}`}
+            >
+              Ask the simple version
+            </TextLink>
+          </div>
+        </Card>
       </Container>
 
       <section className="border-y border-[#d8ded6] bg-white py-14">
@@ -147,10 +173,10 @@ export async function CountryPage({ countrySlug }: CountryPageProps) {
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
               <Eyebrow>
-                {hasPublishedContent ? "Start with the basics" : "Coming next"}
+                {hasPublishedContent ? "Answered" : "Needs answers"}
               </Eyebrow>
               <h2 className="mt-3 text-4xl font-bold tracking-tight">
-                {country.name} explainers
+                Answered questions
               </h2>
             </div>
             {featuredExplainer ? (
@@ -163,7 +189,7 @@ export async function CountryPage({ countrySlug }: CountryPageProps) {
               <PrimaryLink
                 href={`/search?q=${encodeURIComponent(`What should LoreSabi explain about ${country.name}?`)}&country=${country.slug}`}
               >
-                Search {country.name} questions
+                Ask a question
               </PrimaryLink>
             )}
           </div>
@@ -196,13 +222,11 @@ export async function CountryPage({ countrySlug }: CountryPageProps) {
           ) : (
             <Card className="mt-8 bg-[#fbfcf8]">
               <h3 className="text-2xl font-bold">
-                {country.name} is in the queue.
+                No reviewed answers for {country.name} yet.
               </h3>
               <p className="mt-4 max-w-3xl leading-7 text-[#3f4842]">
-                This page should collect real curiosity first: what people ask,
-                what trends spike, and which explainers deserve source-backed
-                writing. That keeps LoreSabi away from becoming a static
-                encyclopedia page.
+                Searches and reliable signals will decide which questions get
+                written first.
               </p>
               <div className="mt-6 flex flex-wrap gap-4">
                 <TextLink href="/countries">Browse other countries</TextLink>

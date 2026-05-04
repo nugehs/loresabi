@@ -1,23 +1,8 @@
 import Link from "next/link";
 import { ColonialNigeriaFlag, NigeriaFlag } from "@/components/flags";
 import { SiteHeader } from "@/components/site-header";
-import { Card, Container, Eyebrow, PageShell, PrimaryLink, TextLink } from "@/components/ui";
+import { Card, Container, Eyebrow, PageShell, TextLink } from "@/components/ui";
 import { getCountries, getCountry, getTrends } from "@/lib/api";
-
-const explainerSections = [
-  {
-    title: "Short answer first",
-    body: "People should get the useful answer before the deep dive. Then they can choose context, timeline, sources, or related questions.",
-  },
-  {
-    title: "Built around trust",
-    body: "Every serious explainer needs source links, image attribution, last updated dates, and a clear review status.",
-  },
-  {
-    title: "AI stays behind the curtain",
-    body: "LoreSabi should feel like a clean knowledge product. AI helps research, classify, and draft, but the user sees structured context.",
-  },
-];
 
 export default async function Home() {
   const [countries, nigeria, trendingItems] = await Promise.all([
@@ -34,17 +19,17 @@ export default async function Home() {
       <section className="border-b border-[#d8ded6]">
         <Container className="grid gap-12 py-14 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
           <div>
-            <p className="mb-5 text-base font-bold text-[#00703c]">Country context, made simple</p>
+            <p className="mb-5 text-base font-bold text-[#00703c]">Country questions, made simple</p>
             <h1 className="max-w-3xl text-5xl font-bold leading-[1.02] tracking-tight md:text-7xl">
-              Understand any country without the confusion.
+              See what people ask. Get the simple answer.
             </h1>
             <p className="mt-7 max-w-2xl text-xl leading-8 text-[#3f4842]">
-              Search history, culture, current affairs, pop culture, flags, and the questions people are asking now. Clear answers, visible sources, and context you can actually remember.
+              Search a country question about history, current affairs, pop culture, flags, names, slang, or symbols. LoreSabi answers what it can and tracks what people want explained next.
             </p>
 
             <form className="mt-10 max-w-2xl" role="search" aria-label="Search LoreSabi" action="/search">
               <label className="mb-3 block text-lg font-bold" htmlFor="search">
-                Search a country, topic, or question
+                Ask a country question
               </label>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <input
@@ -61,6 +46,7 @@ export default async function Home() {
             </form>
 
             <div className="mt-8 flex flex-wrap gap-3" aria-label="Popular countries">
+              <p className="w-full text-sm font-bold text-[#5d665f]">Or choose a country</p>
               {countries.map((country) => (
                 <Link key={country.slug} className="rounded border border-[#b9c3ba] bg-white px-4 py-2 text-sm font-bold text-[#151917] hover:border-[#00703c] hover:text-[#00703c]" href={`/countries/${country.slug}`}>
                   {country.name}
@@ -71,7 +57,7 @@ export default async function Home() {
 
           <aside className="rounded-lg border border-[#d8ded6] bg-[#e8f2ec] p-6" aria-label="Featured explainer preview">
             <Card>
-              <p className="text-sm font-bold uppercase tracking-wide text-[#00703c]">Featured explainer</p>
+              <p className="text-sm font-bold uppercase tracking-wide text-[#00703c]">Example answer</p>
               <h2 className="mt-3 text-3xl font-bold leading-tight">{featured?.title ?? "Nigeria had a different flag before independence"}</h2>
               <div className="mt-6 flex gap-5">
                 <ColonialNigeriaFlag />
@@ -79,7 +65,7 @@ export default async function Home() {
               </div>
               <p className="mt-5 text-base leading-7 text-[#3f4842]">{featured?.shortAnswer ?? "Before the green-white-green flag, colonial Nigeria used British ensign-style flags with a local badge."}</p>
               <div className="mt-6">
-                <TextLink href={`/countries/nigeria/${featured?.slug ?? "old-nigerian-flag"}`}>Read the simple version</TextLink>
+                <TextLink href={`/countries/nigeria/${featured?.slug ?? "old-nigerian-flag"}`}>Open answer</TextLink>
               </div>
             </Card>
           </aside>
@@ -91,9 +77,9 @@ export default async function Home() {
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div className="max-w-3xl">
               <Eyebrow>Curiosity signals</Eyebrow>
-              <h2 className="mt-3 text-4xl font-bold tracking-tight">What people are trying to understand now</h2>
+              <h2 className="mt-3 text-4xl font-bold tracking-tight">Questions to explain next</h2>
             </div>
-            <TextLink href="/trends">View all trends</TextLink>
+            <TextLink href="/trends">View signals</TextLink>
           </div>
           <div className="mt-8 grid gap-5 lg:grid-cols-4">
             {trendingItems.map((item) => (
@@ -110,29 +96,6 @@ export default async function Home() {
                 <p className="mt-2 text-sm font-bold text-[#00703c]">{item.category}</p>
                 <p className="mt-4 leading-7 text-[#3f4842]">{item.reason}</p>
               </Link>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <section className="py-14">
-        <Container className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <Eyebrow>Explainer format</Eyebrow>
-            <h2 className="mt-3 text-4xl font-bold tracking-tight">Built like a service, not a feed</h2>
-            <p className="mt-5 text-lg leading-8 text-[#3f4842]">
-              The foundation is inspired by the UK design guide: plain language, obvious actions, strong accessibility, and no hiding the important bits behind clever UI.
-            </p>
-            <div className="mt-6">
-              <PrimaryLink href="/countries/nigeria">Explore Nigeria</PrimaryLink>
-            </div>
-          </div>
-          <div className="grid gap-4">
-            {explainerSections.map((section) => (
-              <Card key={section.title}>
-                <h3 className="text-xl font-bold">{section.title}</h3>
-                <p className="mt-3 leading-7 text-[#3f4842]">{section.body}</p>
-              </Card>
             ))}
           </div>
         </Container>
