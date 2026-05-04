@@ -314,7 +314,7 @@ async function main() {
   await prisma.explainer.deleteMany({
     where: {
       countryId: country.id,
-      slug: { notIn: nigeriaExplainers.map((explainer) => explainer.slug) },
+      slug: "why-is-afrobeats-global",
     },
   });
 

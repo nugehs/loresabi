@@ -33,6 +33,7 @@ The product returns structured answers with short summaries, timelines, images, 
 - [Web layout spec](docs/WEB_LAYOUT_SPEC.md)
 - [Design foundation](docs/DESIGN_FOUNDATION.md)
 - [AI model strategy](docs/AI_MODEL_STRATEGY.md)
+- [Segzy setup actions](docs/SEGZY_ACTIONS.md)
 
 ## Current Status
 

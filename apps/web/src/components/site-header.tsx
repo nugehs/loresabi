@@ -5,6 +5,11 @@ const navItems = [
   { href: "/trends", label: "Trends" },
   { href: "/countries/nigeria/old-nigerian-flag", label: "Explainers" },
   { href: "/editorial", label: "Editorial" },
+  { href: "/drafts", label: "Drafts" },
+  { href: "/attribution", label: "Attribution" },
+  { href: "/ops", label: "Ops" },
+  { href: "/saved", label: "Saved" },
+  { href: "/pro", label: "Pro" },
   { href: "/search", label: "Search" },
 ];
 
@@ -18,7 +23,7 @@ export function SiteHeader() {
         </Link>
         <nav
           aria-label="Primary navigation"
-          className="hidden items-center gap-8 text-sm font-semibold text-[#3f4842] md:flex"
+          className="hidden items-center gap-4 text-xs font-semibold text-[#3f4842] lg:flex xl:text-sm"
         >
           {navItems.map((item) => (
             <Link key={item.href} className="hover:text-[#00703c]" href={item.href}>

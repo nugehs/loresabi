@@ -140,10 +140,39 @@ export type EditorialQueue = {
   explainers: Explainer[];
 };
 
+export type AttributionReport = {
+  country: CountrySummary;
+  counts: {
+    total: number;
+    missingSources: number;
+    missingImages: number;
+    missingImageCredits: number;
+  };
+  explainers: Array<
+    Explainer & {
+      attribution: {
+        hasSources: boolean;
+        hasImages: boolean;
+        imagesHaveCredits: boolean;
+      };
+    }
+  >;
+};
+
 type ApiEditorialQueue = {
   country: ApiCountry;
   counts: EditorialQueue["counts"];
   explainers: ApiExplainer[];
+};
+
+type ApiAttributionReport = {
+  country: ApiCountry;
+  counts: AttributionReport["counts"];
+  explainers: Array<
+    ApiExplainer & {
+      attribution: AttributionReport["explainers"][number]["attribution"];
+    }
+  >;
 };
 
 async function apiFetch<T>(path: string): Promise<T | null> {
@@ -337,6 +366,53 @@ export async function getEditorialQueue(
       inReview: 0,
     },
     explainers,
+  };
+}
+
+export async function getAttributionReport(
+  countrySlug = "nigeria",
+): Promise<AttributionReport> {
+  const apiReport = await apiFetch<ApiAttributionReport>(
+    `/editorial/countries/${countrySlug}/attribution`,
+  );
+
+  if (apiReport) {
+    return {
+      country: mapCountry(apiReport.country),
+      counts: apiReport.counts,
+      explainers: apiReport.explainers.map((explainer) => ({
+        ...mapExplainer(explainer),
+        attribution: explainer.attribution,
+      })),
+    };
+  }
+
+  const queue = await getEditorialQueue(countrySlug);
+
+  return {
+    country: queue.country,
+    counts: {
+      total: queue.explainers.length,
+      missingSources: queue.explainers.filter(
+        (explainer) => explainer.sources.length === 0,
+      ).length,
+      missingImages: queue.explainers.filter(
+        (explainer) => explainer.images.length === 0,
+      ).length,
+      missingImageCredits: queue.explainers.filter((explainer) =>
+        explainer.images.some((image) => !image.credit || !image.sourceUrl),
+      ).length,
+    },
+    explainers: queue.explainers.map((explainer) => ({
+      ...explainer,
+      attribution: {
+        hasSources: explainer.sources.length > 0,
+        hasImages: explainer.images.length > 0,
+        imagesHaveCredits: explainer.images.every(
+          (image) => image.credit && image.sourceUrl,
+        ),
+      },
+    })),
   };
 }
 

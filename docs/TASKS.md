@@ -2,20 +2,14 @@
 
 ## Now
 
-- [ ] Review the initial Figma flow and note changes
-- [ ] Add desktop web screens to Figma once MCP tool limit is available
 - [x] Choose working product name: LoreSabi
 - [x] Pick first 10 Nigeria explainers
 - [x] Create content template for explainers
 - [x] Start Postgres with Docker and apply first Prisma migration
-- [ ] Decide Supabase vs Neon for Postgres
+- [x] Decide Supabase vs Neon for Postgres
 
 ## Next
 
-- [ ] Add desktop Figma layout from `docs/WEB_LAYOUT_SPEC.md`
-- [ ] Add onboarding flow in Figma
-- [ ] Add saved items screen in Figma
-- [ ] Add Pro/country pack screen in Figma
 - [x] Create TypeScript monorepo
 - [x] Create Next.js web app in `apps/web`
 - [x] Create NestJS API app in `apps/api`
@@ -32,11 +26,28 @@
 - [x] Add dynamic search in web app
 - [x] Add static search page
 - [x] Add static trends page
-- [ ] Add AI draft generation
-- [ ] Add image attribution pipeline
-- [ ] Add trends ingestion
-- [ ] Add accounts and saved items
-- [ ] Add Stripe and Pro features
+- [x] Add AI draft generation
+- [x] Add image attribution pipeline
+- [x] Add trends ingestion
+- [x] Add accounts and saved items
+- [ ] Add live Stripe and Pro features
+
+## Waiting On Segzy
+
+- [ ] Create production Neon database and provide `DATABASE_URL`
+- [ ] Create OpenAI API key and provide `OPENAI_API_KEY`
+- [ ] Create Stripe account, product, and price; provide `STRIPE_SECRET_KEY` and `STRIPE_PRICE_ID`
+- [ ] Create Vercel project and add environment variables
+- [ ] Point `loresabi.com` DNS when ready
+
+## Parked
+
+- [ ] Review the initial Figma flow and note changes
+- [ ] Add desktop web screens to Figma once MCP tool limit is available
+- [ ] Add desktop Figma layout from `docs/WEB_LAYOUT_SPEC.md`
+- [ ] Add onboarding flow in Figma
+- [ ] Add saved items screen in Figma
+- [ ] Add Pro/country pack screen in Figma
 
 ## Done
 
@@ -56,6 +67,12 @@
 - [x] Add database-backed API endpoints
 - [x] Wire web pages to database-backed API
 - [x] Add internal editorial queue for Nigeria explainers
+- [x] Add AI draft desk with OpenAI-ready fallback
+- [x] Add attribution report
+- [x] Add internal-search trend ingestion
+- [x] Add temporary email-based saved items flow
+- [x] Add Stripe Checkout-ready Pro foundation
+- [x] Add Segzy setup checklist
 
 ## Working Notes
 

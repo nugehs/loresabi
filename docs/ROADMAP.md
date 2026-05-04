@@ -32,27 +32,28 @@
 
 ## Phase 4: Database and Dynamic Content
 
-- [ ] Choose database provider: Supabase or Neon
+- [x] Choose database provider: Neon for first production pass
 - [ ] Add Postgres schema
 - [ ] Add Prisma
 - [ ] Seed countries
 - [ ] Seed initial explainers
 - [ ] Add sources and images tables
 - [ ] Add search logs
-- [ ] Add saved items
+- [x] Add saved items
 
 ## Phase 5: Internal AI Pipeline
 
 - [ ] Build research worker
-- [ ] Build explainer writer worker
+- [x] Build explainer writer worker
 - [ ] Build image sourcing worker
-- [ ] Store AI drafts as needs_review
+- [x] Store AI drafts as needs_review
 - [ ] Add manual review status
 - [ ] Add source quality checks
 
 ## Phase 6: Trends
 
-- [ ] Start with manually curated trends
+- [x] Start with manually curated trends
+- [x] Add internal search-log trend ingestion
 - [ ] Add Wikipedia pageview ingestion
 - [ ] Add Google Trends or BigQuery exploration
 - [ ] Add GDELT or NewsAPI current affairs ingestion
@@ -64,7 +65,7 @@
 - [ ] Define Pro feature set
 - [ ] Design Pro screen
 - [ ] Add account system
-- [ ] Add Stripe
+- [ ] Add live Stripe keys and price
 - [ ] Add saved country packs
 - [ ] Add audio briefings
 - [ ] Explore school/university licensing

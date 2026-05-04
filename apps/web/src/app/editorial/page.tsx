@@ -19,7 +19,7 @@ export default async function EditorialPage() {
       <Container className="py-14 lg:py-20">
         <Eyebrow>Editorial queue</Eyebrow>
         <h1 className="mt-3 max-w-4xl text-5xl font-bold tracking-tight">
-          First 10 Nigeria explainers
+          Nigeria editorial queue
         </h1>
         <p className="mt-6 max-w-3xl text-xl leading-8 text-[#3f4842]">
           This is the internal content runway: published pieces stay public,
