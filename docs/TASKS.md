@@ -20,7 +20,7 @@
 - [x] Create NestJS API app in `apps/api`
 - [x] Create shared Prisma package in `packages/database`
 - [x] Create shared types package in `packages/shared`
-- [ ] Build static homepage from Figma
+- [x] Build static homepage from Figma
 - [ ] Build static country page from Figma
 - [ ] Build static explainer page from Figma
 
