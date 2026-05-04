@@ -31,10 +31,12 @@ The product returns structured answers with short summaries, timelines, images, 
 - [Content plan](docs/CONTENT_PLAN.md)
 - [Technical architecture](docs/TECH_ARCHITECTURE.md)
 - [Web layout spec](docs/WEB_LAYOUT_SPEC.md)
+- [Design foundation](docs/DESIGN_FOUNDATION.md)
+- [AI model strategy](docs/AI_MODEL_STRATEGY.md)
 
 ## Current Status
 
-This repository currently contains product and technical planning documentation. Implementation has not started yet.
+This repository now contains the initial TypeScript monorepo scaffold: Next.js web app, NestJS API app, shared packages, Docker development setup, and product documentation.
 
 ## Figma
 

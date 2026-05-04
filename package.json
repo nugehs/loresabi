@@ -1,0 +1,39 @@
+{
+  "name": "loresabi",
+  "version": "1.0.0",
+  "description": "LoreSabi by Bashbop is a web-first knowledge product for understanding countries through simple explainers, culture, current affairs, pop culture, national symbols, and live curiosity signals.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "npm run test --workspaces --if-present",
+    "dev": "npm run dev --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "dev:web": "npm run dev -w @loresabi/web",
+    "dev:api": "npm run dev -w @loresabi/api",
+    "build:web": "npm run build -w @loresabi/web",
+    "build:api": "npm run build -w @loresabi/api"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nugehs/loresabi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nugehs/loresabi/issues"
+  },
+  "homepage": "https://github.com/nugehs/loresabi#readme",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": "22.x"
+  }
+}

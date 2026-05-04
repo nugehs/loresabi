@@ -15,11 +15,11 @@
 - [ ] Add onboarding flow in Figma
 - [ ] Add saved items screen in Figma
 - [ ] Add Pro/country pack screen in Figma
-- [ ] Create TypeScript monorepo
-- [ ] Create Next.js web app in `apps/web`
-- [ ] Create NestJS API app in `apps/api`
-- [ ] Create shared Prisma package in `packages/database`
-- [ ] Create shared types package in `packages/shared`
+- [x] Create TypeScript monorepo
+- [x] Create Next.js web app in `apps/web`
+- [x] Create NestJS API app in `apps/api`
+- [x] Create shared Prisma package in `packages/database`
+- [x] Create shared types package in `packages/shared`
 - [ ] Build static homepage from Figma
 - [ ] Build static country page from Figma
 - [ ] Build static explainer page from Figma
@@ -44,6 +44,8 @@
 - [x] Captured desktop web layout spec
 - [x] Selected working name and domain target: LoreSabi / loresabi.com
 - [x] Chose OpenAI-first AI model strategy
+- [x] Added GOV.UK-inspired design foundation
+- [x] Added Docker development foundation
 
 ## Working Notes
 

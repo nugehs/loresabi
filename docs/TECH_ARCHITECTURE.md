@@ -55,6 +55,18 @@ Later NestJS modules:
 - AudioModule
 - NotificationsModule
 
+## Docker
+
+Development Docker setup is included at the repo root.
+
+Services:
+
+- `web`: Next.js app on port `3000`
+- `api`: NestJS API on port `4000`
+- `postgres`: local Postgres database on port `5432`
+
+Use Docker for local parity when database-backed features begin. For early UI-only work, running `npm run dev:web` directly is also fine.
+
 ## App Structure
 
 Expected routes:
