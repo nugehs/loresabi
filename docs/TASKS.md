@@ -7,6 +7,7 @@
 - [x] Choose working product name: LoreSabi
 - [ ] Pick first 10 Nigeria explainers
 - [ ] Create content template for explainers
+- [ ] Start Postgres with Docker and run first Prisma migration
 - [ ] Decide Supabase vs Neon for Postgres
 
 ## Next
@@ -26,7 +27,7 @@
 
 ## Later
 
-- [ ] Add database schema
+- [x] Add database schema
 - [ ] Add seeded content
 - [ ] Add dynamic search
 - [x] Add static search page
@@ -48,6 +49,7 @@
 - [x] Chose OpenAI-first AI model strategy
 - [x] Added GOV.UK-inspired design foundation
 - [x] Added Docker development foundation
+- [x] Added initial Prisma schema and client package scripts
 
 ## Working Notes
 

@@ -3,13 +3,20 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --noEmit"
+    "build": "tsc --noEmit",
+    "db:generate": "DATABASE_URL=${DATABASE_URL:-postgresql://loresabi:loresabi@localhost:5432/loresabi} prisma generate --schema prisma/schema.prisma",
+    "db:migrate": "DATABASE_URL=${DATABASE_URL:-postgresql://loresabi:loresabi@localhost:5432/loresabi} prisma migrate dev --schema prisma/schema.prisma",
+    "db:studio": "DATABASE_URL=${DATABASE_URL:-postgresql://loresabi:loresabi@localhost:5432/loresabi} prisma studio --schema prisma/schema.prisma",
+    "db:validate": "DATABASE_URL=${DATABASE_URL:-postgresql://loresabi:loresabi@localhost:5432/loresabi} prisma validate --schema prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "type": "module",
-  "types": "src/index.ts"
+  "types": "src/index.ts",
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "prisma": "^6.19.3"
+  }
 }
