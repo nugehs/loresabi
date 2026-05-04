@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { Card, Container, Eyebrow, PageShell, PrimaryLink } from "@/components/ui";
-import { getTrends, searchContent } from "@/lib/api";
+import { getCountry, getTrends, searchContent } from "@/lib/api";
 
 type SearchPageProps = {
   searchParams?: Promise<{
@@ -14,11 +14,15 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const params = await searchParams;
   const query = params?.q ?? "";
   const country = params?.country ?? "nigeria";
-  const [results, trends] = await Promise.all([
+  const [results, trends, countryDetail] = await Promise.all([
     searchContent(query, country),
     getTrends(country),
+    getCountry(country),
   ]);
   const bestAnswer = results.explainers[0];
+  const trackedTrend = trends.find(
+    (item) => item.topic.toLowerCase() === query.trim().toLowerCase(),
+  );
 
   return (
     <PageShell>
@@ -52,10 +56,44 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               </>
             ) : (
               <>
-                <h2 className="mt-3 text-3xl font-bold">No exact explainer yet</h2>
-                <p className="mt-4 text-lg leading-8 text-[#3f4842]">
-                  Try “flag”, “Nigeria name”, or open a related search. Later this empty state can trigger an AI-assisted draft for editorial review.
-                </p>
+                {trackedTrend ? (
+                  <>
+                    <h2 className="mt-3 text-3xl font-bold">
+                      Tracked question, no explainer yet
+                    </h2>
+                    <p className="mt-4 text-lg leading-8 text-[#3f4842]">
+                      LoreSabi has logged “{trackedTrend.topic}” as a{" "}
+                      {countryDetail?.name ?? "country"} curiosity signal, but
+                      there is no source-reviewed explainer published for it
+                      yet.
+                    </p>
+                    <p className="mt-4 rounded bg-[#fff7e8] px-4 py-3 font-semibold text-[#8a4b00]">
+                      {trackedTrend.reason}
+                    </p>
+                    <div className="mt-6 flex flex-wrap gap-4">
+                      <PrimaryLink href="/drafts">
+                        Generate editorial draft
+                      </PrimaryLink>
+                      <Link
+                        className="font-bold text-[#005ea5] underline underline-offset-4"
+                        href={`/countries/${country}`}
+                      >
+                        Back to {countryDetail?.name ?? "country"} context
+                      </Link>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h2 className="mt-3 text-3xl font-bold">
+                      No exact explainer yet
+                    </h2>
+                    <p className="mt-4 text-lg leading-8 text-[#3f4842]">
+                      LoreSabi found no source-reviewed explainer for this
+                      country yet. This search has still been logged as a
+                      curiosity signal for editorial review.
+                    </p>
+                  </>
+                )}
               </>
             )}
           </Card>

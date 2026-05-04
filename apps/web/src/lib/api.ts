@@ -297,7 +297,15 @@ export async function getTrends(country?: string): Promise<Trend[]> {
     return apiTrends.map(mapTrend);
   }
 
-  return trendingItems.map((item, index) => mapStaticTrend(item, index));
+  const staticTrendItems = country
+    ? trendingItems.filter(
+        (item) =>
+          staticCountries.find((staticCountry) => staticCountry.slug === country)
+            ?.name === item.country,
+      )
+    : trendingItems;
+
+  return staticTrendItems.map((item, index) => mapStaticTrend(item, index));
 }
 
 export async function searchContent(
