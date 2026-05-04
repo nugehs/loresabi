@@ -84,6 +84,38 @@ export class ContentService {
     return this.mapExplainer(explainer);
   }
 
+  async listEditorialExplainers(countrySlug: string) {
+    const country = await this.prisma.country.findUnique({
+      where: { slug: countrySlug },
+    });
+
+    if (!country) {
+      throw new NotFoundException('Country not found');
+    }
+
+    const explainers = await this.prisma.explainer.findMany({
+      where: { countryId: country.id },
+      include: { country: true, topic: true, images: true, sources: true },
+      orderBy: [{ status: 'desc' }, { updatedAt: 'desc' }],
+    });
+
+    return {
+      country: this.mapCountry(country),
+      counts: {
+        total: explainers.length,
+        published: explainers.filter(
+          (explainer) => explainer.status === 'PUBLISHED',
+        ).length,
+        draft: explainers.filter((explainer) => explainer.status === 'DRAFT')
+          .length,
+        inReview: explainers.filter(
+          (explainer) => explainer.status === 'IN_REVIEW',
+        ).length,
+      },
+      explainers: explainers.map((explainer) => this.mapExplainer(explainer)),
+    };
+  }
+
   async listTrends(countrySlug?: string) {
     const trends = await this.prisma.trend.findMany({
       where: countrySlug ? { country: { slug: countrySlug } } : undefined,
@@ -209,6 +241,7 @@ export class ContentService {
       summary: explainer.summary,
       body: explainer.body,
       category: explainer.category,
+      status: explainer.status,
       readingTime: explainer.readingTime,
       publishedAt: explainer.publishedAt?.toISOString() ?? null,
       country: this.mapCountry(explainer.country),

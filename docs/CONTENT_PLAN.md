@@ -14,18 +14,24 @@ Every explainer should use this structure:
 8. Image credits and license
 9. Last updated date
 
+Use the full writing and review template in [`EXPLAINER_TEMPLATE.md`](EXPLAINER_TEMPLATE.md).
+
 ## First Nigeria Explainers
 
-- [ ] How did Nigeria get its name?
-- [ ] Did Nigeria have another flag before?
-- [ ] Who designed Nigeria's current flag?
-- [ ] What does Nigeria's flag mean?
-- [ ] What was Nigeria called before independence?
-- [ ] What happened on October 1, 1960?
-- [ ] What is the River Niger and why does it matter?
-- [ ] What are Nigeria's major languages?
-- [ ] What does japa mean?
-- [ ] Why is Nollywood important?
+- [x] How did Nigeria get its name?
+- [x] Did Nigeria have another flag before?
+- [x] Who designed Nigeria's current flag?
+- [x] What does Nigeria's flag mean?
+- [x] What was Nigeria called before independence?
+- [x] What happened on October 1, 1960?
+- [x] Why did Lagos stop being Nigeria's capital?
+- [x] What are Nigeria's major languages?
+- [x] What does japa mean?
+- [x] Why is Nollywood important?
+
+## Nigeria Editorial Queue
+
+The first 10 Nigeria explainers are now seeded into Postgres. The public site only shows `PUBLISHED` explainers; draft explainers appear in the internal `/editorial` queue until source review is complete.
 
 ## First Ghana Explainers
 

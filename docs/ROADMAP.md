@@ -12,12 +12,12 @@
 
 ## Phase 2: Content Foundation
 
-- [ ] Pick first 10 Nigeria explainers
+- [x] Pick first 10 Nigeria explainers
 - [ ] Write first 10 structured explainers
 - [ ] Add source links for every explainer
 - [ ] Add image source and attribution for every image
 - [ ] Define editorial rules for sensitive topics
-- [ ] Create reusable content template
+- [x] Create reusable content template
 
 ## Phase 3: Technical MVP
 

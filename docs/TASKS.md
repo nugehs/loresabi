@@ -5,8 +5,8 @@
 - [ ] Review the initial Figma flow and note changes
 - [ ] Add desktop web screens to Figma once MCP tool limit is available
 - [x] Choose working product name: LoreSabi
-- [ ] Pick first 10 Nigeria explainers
-- [ ] Create content template for explainers
+- [x] Pick first 10 Nigeria explainers
+- [x] Create content template for explainers
 - [x] Start Postgres with Docker and apply first Prisma migration
 - [ ] Decide Supabase vs Neon for Postgres
 
@@ -55,6 +55,7 @@
 - [x] Seeded local Postgres with Nigeria starter content
 - [x] Add database-backed API endpoints
 - [x] Wire web pages to database-backed API
+- [x] Add internal editorial queue for Nigeria explainers
 
 ## Working Notes
 

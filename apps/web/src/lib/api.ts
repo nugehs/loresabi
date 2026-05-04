@@ -104,7 +104,7 @@ type ApiCountry = Omit<CountrySummary, "summary" | "status"> & {
 
 type ApiExplainer = Omit<
   Explainer,
-  "shortAnswer" | "whyItMatters" | "readTime" | "status"
+  "shortAnswer" | "whyItMatters" | "readTime"
 > & {
   country: ApiCountry;
 };
@@ -126,6 +126,23 @@ type ApiCountryDetail = ApiCountry & {
 type ApiSearchResults = {
   query: string;
   countries: ApiCountry[];
+  explainers: ApiExplainer[];
+};
+
+export type EditorialQueue = {
+  country: CountrySummary;
+  counts: {
+    total: number;
+    published: number;
+    draft: number;
+    inReview: number;
+  };
+  explainers: Explainer[];
+};
+
+type ApiEditorialQueue = {
+  country: ApiCountry;
+  counts: EditorialQueue["counts"];
   explainers: ApiExplainer[];
 };
 
@@ -285,6 +302,44 @@ export async function searchContent(
   };
 }
 
+export async function getEditorialQueue(
+  countrySlug = "nigeria",
+): Promise<EditorialQueue> {
+  const apiQueue = await apiFetch<ApiEditorialQueue>(
+    `/editorial/countries/${countrySlug}/explainers`,
+  );
+
+  if (apiQueue) {
+    return {
+      country: mapCountry(apiQueue.country),
+      counts: apiQueue.counts,
+      explainers: apiQueue.explainers.map(mapExplainer),
+    };
+  }
+
+  const country = await getCountry(countrySlug);
+  const explainers = country?.explainers ?? [];
+
+  return {
+    country:
+      country ??
+      mapCountry({
+        slug: countrySlug,
+        name: titleCase(countrySlug),
+        region: null,
+      }),
+    counts: {
+      total: explainers.length,
+      published: explainers.filter((explainer) => explainer.status === "Published")
+        .length,
+      draft: explainers.filter((explainer) => explainer.status !== "Published")
+        .length,
+      inReview: 0,
+    },
+    explainers,
+  };
+}
+
 function mapCountry(country: ApiCountry): CountrySummary {
   const staticCountry = staticCountries.find((item) => item.slug === country.slug);
 
@@ -316,7 +371,7 @@ function mapExplainer(explainer: ApiExplainer): Explainer {
       staticExplainer?.whyItMatters ??
       "This turns a simple question into wider context about identity, history, symbols, and public memory.",
     readTime,
-    status: "Published",
+    status: titleCase(explainer.status.toLowerCase()),
   };
 }
 

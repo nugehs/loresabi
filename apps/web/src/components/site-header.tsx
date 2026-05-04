@@ -4,6 +4,7 @@ const navItems = [
   { href: "/countries", label: "Countries" },
   { href: "/trends", label: "Trends" },
   { href: "/countries/nigeria/old-nigerian-flag", label: "Explainers" },
+  { href: "/editorial", label: "Editorial" },
   { href: "/search", label: "Search" },
 ];
 

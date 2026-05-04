@@ -28,6 +28,11 @@ export class ContentController {
     return this.contentService.getExplainer(slug, explainerSlug);
   }
 
+  @Get('editorial/countries/:slug/explainers')
+  listEditorialExplainers(@Param('slug') slug: string) {
+    return this.contentService.listEditorialExplainers(slug);
+  }
+
   @Get('trends')
   listTrends(@Query('country') country?: string) {
     return this.contentService.listTrends(country);
