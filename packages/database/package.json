@@ -4,10 +4,11 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc --noEmit",
-    "db:generate": "DATABASE_URL=${DATABASE_URL:-postgresql://loresabi:loresabi@localhost:5432/loresabi} prisma generate --schema prisma/schema.prisma",
-    "db:migrate": "DATABASE_URL=${DATABASE_URL:-postgresql://loresabi:loresabi@localhost:5432/loresabi} prisma migrate dev --schema prisma/schema.prisma",
-    "db:studio": "DATABASE_URL=${DATABASE_URL:-postgresql://loresabi:loresabi@localhost:5432/loresabi} prisma studio --schema prisma/schema.prisma",
-    "db:validate": "DATABASE_URL=${DATABASE_URL:-postgresql://loresabi:loresabi@localhost:5432/loresabi} prisma validate --schema prisma/schema.prisma"
+    "db:generate": "DATABASE_URL=${DATABASE_URL:-postgresql://loresabi:loresabi@localhost:15432/loresabi} prisma generate --schema prisma/schema.prisma",
+    "db:migrate": "DATABASE_URL=${DATABASE_URL:-postgresql://loresabi:loresabi@localhost:15432/loresabi} prisma migrate dev --schema prisma/schema.prisma",
+    "db:studio": "DATABASE_URL=${DATABASE_URL:-postgresql://loresabi:loresabi@localhost:15432/loresabi} prisma studio --schema prisma/schema.prisma",
+    "db:validate": "DATABASE_URL=${DATABASE_URL:-postgresql://loresabi:loresabi@localhost:15432/loresabi} prisma validate --schema prisma/schema.prisma",
+    "db:seed": "DATABASE_URL=${DATABASE_URL:-postgresql://loresabi:loresabi@localhost:15432/loresabi} node prisma/seed.mjs"
   },
   "keywords": [],
   "author": "",

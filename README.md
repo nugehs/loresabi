@@ -36,7 +36,29 @@ The product returns structured answers with short summaries, timelines, images, 
 
 ## Current Status
 
-This repository now contains the initial TypeScript monorepo scaffold: Next.js web app, NestJS API app, shared packages, Docker development setup, and product documentation.
+This repository now contains the initial TypeScript monorepo scaffold: Next.js web app, NestJS API app, shared packages, Docker development setup, Prisma schema, initial migration, and Nigeria starter seed content.
+
+## Local Development
+
+Start local Postgres on host port `15432`:
+
+```sh
+docker compose up -d postgres
+```
+
+Apply the database schema and seed starter content:
+
+```sh
+npm run db:migrate
+npm run db:seed
+```
+
+Run the web app and API:
+
+```sh
+npm run dev:web
+npm run dev:api
+```
 
 ## Figma
 

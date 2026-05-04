@@ -18,7 +18,8 @@
     "db:generate": "npm run db:generate -w @loresabi/database",
     "db:migrate": "npm run db:migrate -w @loresabi/database",
     "db:studio": "npm run db:studio -w @loresabi/database",
-    "db:validate": "npm run db:validate -w @loresabi/database"
+    "db:validate": "npm run db:validate -w @loresabi/database",
+    "db:seed": "npm run db:seed -w @loresabi/database"
   },
   "repository": {
     "type": "git",
