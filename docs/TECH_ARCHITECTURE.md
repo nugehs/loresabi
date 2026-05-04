@@ -10,7 +10,7 @@
 - ORM: Prisma
 - Auth: Clerk or Supabase Auth later
 - Storage: Supabase Storage or Cloudflare R2
-- AI: OpenAI API
+- AI: OpenAI API first, with GPT-5 nano for cheap worker tasks and GPT-5 mini for user-facing explainers
 - Search: Postgres full-text first, vector search later
 - Jobs: Inngest or Trigger.dev
 - Hosting: Vercel
@@ -96,6 +96,44 @@ Later workers:
 - Translation
 - Audio briefing
 - Update checker
+
+## AI Model Strategy
+
+LoreSabi should use a tiered model setup instead of one model for every task.
+
+Default provider:
+
+- OpenAI
+
+Default models:
+
+- GPT-5 nano for cheap, high-volume worker tasks.
+- GPT-5 mini for user-facing explainers and sensitive drafting.
+
+Use GPT-5 nano for:
+
+- Query classification
+- Country/topic/category detection
+- Source snippet summarization
+- Related question generation
+- Metadata tagging
+- Trend classification
+
+Use GPT-5 mini for:
+
+- Short answer generation
+- Full explainer drafting
+- Timeline generation
+- "Why it matters" sections
+- Sensitive topics such as politics, ethnicity, religion, conflict, elections, and active current affairs
+
+Potential fallback providers:
+
+- Gemini Flash-Lite for low-cost multimodal or backup generation.
+- DeepSeek V4 Flash for low-cost drafting experiments.
+- Groq-hosted open models for ultra-fast, simple classification tasks.
+
+Do not expose provider choice to users in the MVP. Keep model routing internal.
 
 ## Technical Principle
 

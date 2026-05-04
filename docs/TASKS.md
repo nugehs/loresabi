@@ -39,6 +39,7 @@
 - [x] Created project tracking docs
 - [x] Captured desktop web layout spec
 - [x] Selected working name and domain target: LoreSabi / loresabi.com
+- [x] Chose OpenAI-first AI model strategy
 
 ## Working Notes
 
