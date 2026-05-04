@@ -21,14 +21,16 @@
 - [x] Create shared Prisma package in `packages/database`
 - [x] Create shared types package in `packages/shared`
 - [x] Build static homepage from Figma
-- [ ] Build static country page from Figma
-- [ ] Build static explainer page from Figma
+- [x] Build static country page from Figma
+- [x] Build static explainer page from Figma
 
 ## Later
 
 - [ ] Add database schema
 - [ ] Add seeded content
 - [ ] Add dynamic search
+- [x] Add static search page
+- [x] Add static trends page
 - [ ] Add AI draft generation
 - [ ] Add image attribution pipeline
 - [ ] Add trends ingestion
