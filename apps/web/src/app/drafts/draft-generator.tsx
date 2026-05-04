@@ -16,8 +16,17 @@ type DraftResponse = {
   nextSteps?: string[];
 };
 
-export function DraftGenerator() {
-  const [question, setQuestion] = useState("Why did Lagos stop being Nigeria's capital?");
+type DraftGeneratorProps = {
+  initialCountry: string;
+  initialQuestion: string;
+};
+
+export function DraftGenerator({
+  initialCountry,
+  initialQuestion,
+}: DraftGeneratorProps) {
+  const [country, setCountry] = useState(initialCountry);
+  const [question, setQuestion] = useState(initialQuestion);
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">(
     "idle",
   );
@@ -33,7 +42,7 @@ export function DraftGenerator() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          countrySlug: "nigeria",
+          countrySlug: country,
           question,
           topicSlug: "current-curiosity",
         }),
@@ -53,7 +62,16 @@ export function DraftGenerator() {
   return (
     <div className="rounded-lg border border-[#d8ded6] bg-white p-6 shadow-sm">
       <form onSubmit={submit}>
-        <label className="block text-lg font-bold" htmlFor="draft-question">
+        <label className="block text-lg font-bold" htmlFor="draft-country">
+          Country slug
+        </label>
+        <input
+          id="draft-country"
+          className="mt-3 min-h-12 w-full rounded border-2 border-[#151917] bg-white px-4 text-lg outline-offset-4 focus:outline focus:outline-4 focus:outline-[#ffdd00]"
+          value={country}
+          onChange={(event) => setCountry(event.target.value)}
+        />
+        <label className="mt-5 block text-lg font-bold" htmlFor="draft-question">
           Draft question
         </label>
         <textarea

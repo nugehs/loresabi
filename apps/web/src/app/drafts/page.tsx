@@ -3,7 +3,19 @@ import { SiteHeader } from "@/components/site-header";
 import { Container, Eyebrow, PageShell } from "@/components/ui";
 import { DraftGenerator } from "./draft-generator";
 
-export default function DraftsPage() {
+type DraftsPageProps = {
+  searchParams?: Promise<{
+    q?: string;
+    country?: string;
+  }>;
+};
+
+export default async function DraftsPage({ searchParams }: DraftsPageProps) {
+  const params = await searchParams;
+  const initialQuestion =
+    params?.q ?? "Why did Lagos stop being Nigeria's capital?";
+  const initialCountry = params?.country ?? "nigeria";
+
   return (
     <PageShell>
       <SiteHeader />
@@ -26,7 +38,10 @@ export default function DraftsPage() {
             </Link>
           </div>
         </div>
-        <DraftGenerator />
+        <DraftGenerator
+          initialCountry={initialCountry}
+          initialQuestion={initialQuestion}
+        />
       </Container>
     </PageShell>
   );

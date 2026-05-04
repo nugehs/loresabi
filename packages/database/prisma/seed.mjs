@@ -2,6 +2,61 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+const starterCountries = [
+  {
+    slug: "ghana",
+    name: "Ghana",
+    officialName: "Republic of Ghana",
+    iso2: "GH",
+    iso3: "GHA",
+    region: "Africa",
+    subregion: "West Africa",
+    capital: "Accra",
+    demonym: "Ghanaian",
+    latitude: 7.9465,
+    longitude: -1.0232,
+  },
+  {
+    slug: "united-kingdom",
+    name: "United Kingdom",
+    officialName: "United Kingdom of Great Britain and Northern Ireland",
+    iso2: "GB",
+    iso3: "GBR",
+    region: "Europe",
+    subregion: "Northern Europe",
+    capital: "London",
+    demonym: "British",
+    latitude: 55.3781,
+    longitude: -3.436,
+  },
+  {
+    slug: "united-states",
+    name: "United States",
+    officialName: "United States of America",
+    iso2: "US",
+    iso3: "USA",
+    region: "North America",
+    subregion: "Northern America",
+    capital: "Washington, D.C.",
+    demonym: "American",
+    latitude: 37.0902,
+    longitude: -95.7129,
+  },
+  {
+    slug: "south-africa",
+    name: "South Africa",
+    officialName: "Republic of South Africa",
+    iso2: "ZA",
+    iso3: "ZAF",
+    region: "Africa",
+    subregion: "Southern Africa",
+    capital: "Pretoria",
+    demonym: "South African",
+    latitude: -30.5595,
+    longitude: 22.9375,
+  },
+];
+
 const nigeriaTopics = [
   {
     slug: "national-symbols",
@@ -27,6 +82,33 @@ const nigeriaTopics = [
     slug: "screen-and-music",
     title: "Screen and music",
     description: "Film, music, entertainment, and cultural exports people meet before they understand the context.",
+  },
+];
+
+const sharedTopics = [
+  {
+    slug: "current-curiosity",
+    title: "Current curiosity",
+    description:
+      "Questions people are asking now, grouped into calm explainers instead of noisy feeds.",
+  },
+  {
+    slug: "origin-stories",
+    title: "Origin stories",
+    description:
+      "Short explainers on how places, names, borders, and public ideas came to be.",
+  },
+  {
+    slug: "national-symbols",
+    title: "National symbols",
+    description:
+      "Flags, emblems, anthems, names, and the visible signs that carry national memory.",
+  },
+  {
+    slug: "culture-and-pop",
+    title: "Culture and pop",
+    description:
+      "Music, film, sport, language, food, and cultural moments people meet before they know the context.",
   },
 ];
 
@@ -323,7 +405,81 @@ async function main() {
     data: starterTrends.map((trend) => ({ ...trend, countryId: country.id })),
   });
 
-  console.log("Seeded LoreSabi starter content for Nigeria.");
+  for (const starterCountry of starterCountries) {
+    const savedCountry = await prisma.country.upsert({
+      where: { slug: starterCountry.slug },
+      update: starterCountry,
+      create: starterCountry,
+    });
+
+    for (const topic of sharedTopics) {
+      await prisma.topic.upsert({
+        where: {
+          countryId_slug: {
+            countryId: savedCountry.id,
+            slug: topic.slug,
+          },
+        },
+        update: topic,
+        create: { ...topic, countryId: savedCountry.id },
+      });
+    }
+  }
+
+  const ghana = await prisma.country.findUnique({ where: { slug: "ghana" } });
+  const unitedStates = await prisma.country.findUnique({
+    where: { slug: "united-states" },
+  });
+
+  if (ghana) {
+    await prisma.trend.deleteMany({
+      where: { countryId: ghana.id, source: "CURATED" },
+    });
+    await prisma.trend.createMany({
+      data: [
+        {
+          query: "Black Star meaning",
+          source: "CURATED",
+          score: 74,
+          region: "global",
+          countryId: ghana.id,
+        },
+        {
+          query: "why was Ghana called Gold Coast",
+          source: "CURATED",
+          score: 66,
+          region: "global",
+          countryId: ghana.id,
+        },
+      ],
+    });
+  }
+
+  if (unitedStates) {
+    await prisma.trend.deleteMany({
+      where: { countryId: unitedStates.id, source: "CURATED" },
+    });
+    await prisma.trend.createMany({
+      data: [
+        {
+          query: "United States current affairs",
+          source: "CURATED",
+          score: 81,
+          region: "global",
+          countryId: unitedStates.id,
+        },
+        {
+          query: "why is US politics polarised",
+          source: "CURATED",
+          score: 69,
+          region: "global",
+          countryId: unitedStates.id,
+        },
+      ],
+    });
+  }
+
+  console.log("Seeded LoreSabi starter countries, topics, trends, and Nigeria explainers.");
 }
 
 main()

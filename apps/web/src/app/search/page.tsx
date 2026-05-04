@@ -20,6 +20,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     getCountry(country),
   ]);
   const bestAnswer = results.explainers[0];
+  const draftHref = `/drafts?q=${encodeURIComponent(query)}&country=${encodeURIComponent(country)}`;
   const trackedTrend = trends.find(
     (item) => item.topic.toLowerCase() === query.trim().toLowerCase(),
   );
@@ -71,7 +72,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                       {trackedTrend.reason}
                     </p>
                     <div className="mt-6 flex flex-wrap gap-4">
-                      <PrimaryLink href="/drafts">
+                      <PrimaryLink href={draftHref}>
                         Generate editorial draft
                       </PrimaryLink>
                       <Link
@@ -92,6 +93,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                       country yet. This search has still been logged as a
                       curiosity signal for editorial review.
                     </p>
+                    {query ? (
+                      <div className="mt-6">
+                        <PrimaryLink href={draftHref}>
+                          Generate editorial draft
+                        </PrimaryLink>
+                      </div>
+                    ) : null}
                   </>
                 )}
               </>

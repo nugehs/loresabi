@@ -704,11 +704,11 @@ export class ContentService {
             {
               role: 'system',
               content:
-                'You write LoreSabi explainer drafts. Return only valid JSON with title, summary, body, category, and readingTime. Keep it plain, sourced-sounding, cautious, and mark no unsourced claim as final.',
+                'You write LoreSabi explainer drafts. Return only valid JSON with title, summary, body, category, and readingTime. Keep it plain, sourced-sounding, cautious, and mark no unsourced claim as final. For current affairs, do not pretend to have live news access. Write a source-review brief that explains what must be verified before publication.',
             },
             {
               role: 'user',
-              content: `Country: ${countryName}\nQuestion: ${question}\nAllowed categories: ${Object.values(ExplainerCategory).join(', ')}`,
+              content: buildDraftPrompt(question, countryName),
             },
           ],
           response_format: { type: 'json_object' },
@@ -750,8 +750,8 @@ export class ContentService {
         body: JSON.stringify({
           model: process.env.AI_MAIN_MODEL ?? 'gpt-5-mini',
           instructions:
-            'You write LoreSabi explainer drafts. Return only valid JSON with title, summary, body, category, and readingTime. Keep it plain, sourced-sounding, cautious, and mark no unsourced claim as final.',
-          input: `Country: ${countryName}\nQuestion: ${question}\nAllowed categories: ${Object.values(ExplainerCategory).join(', ')}`,
+            'You write LoreSabi explainer drafts. Return only valid JSON with title, summary, body, category, and readingTime. Keep it plain, sourced-sounding, cautious, and mark no unsourced claim as final. For current affairs, do not pretend to have live news access. Write a source-review brief that explains what must be verified before publication.',
+          input: buildDraftPrompt(question, countryName),
         }),
       });
 
@@ -871,7 +871,9 @@ function buildGeneratedDraft(
       stringValue(parsed.body) ||
       `Draft brief: answer "${question}" in plain English, then add source-backed context before publication.`,
     category: normalizeCategory(
-      stringValue(parsed.category) || request.category,
+      stringValue(parsed.category) ||
+        request.category ||
+        inferCategory(question),
     ),
     readingTime:
       Number.isFinite(readingTime) && readingTime > 0 ? readingTime : 3,
@@ -880,6 +882,33 @@ function buildGeneratedDraft(
 
 function stringValue(value: unknown) {
   return typeof value === 'string' ? value.trim() : '';
+}
+
+function buildDraftPrompt(question: string, countryName: string) {
+  const today = new Date().toISOString().slice(0, 10);
+
+  return [
+    `Current date: ${today}`,
+    `Country: ${countryName}`,
+    `Question: ${question}`,
+    `Allowed categories: ${Object.values(ExplainerCategory).join(', ')}`,
+    'If this is about current affairs, make the draft clearly review-only and avoid stale year-specific claims unless the question asks for that year.',
+    'Include source-checking notes inside the body when facts need live verification.',
+  ].join('\n');
+}
+
+function inferCategory(question: string) {
+  const normalized = question.toLowerCase();
+
+  if (
+    /\b(current|news|election|politics|president|government|war|conflict|protest)\b/.test(
+      normalized,
+    )
+  ) {
+    return ExplainerCategory.CURRENT_AFFAIRS;
+  }
+
+  return undefined;
 }
 
 function normalizeEmail(value: string) {

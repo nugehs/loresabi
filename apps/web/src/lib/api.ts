@@ -178,7 +178,7 @@ type ApiAttributionReport = {
 async function apiFetch<T>(path: string): Promise<T | null> {
   try {
     const response = await fetch(`${apiBaseUrl}${path}`, {
-      next: { revalidate: 60 },
+      cache: "no-store",
       signal: AbortSignal.timeout(1500),
     });
 
