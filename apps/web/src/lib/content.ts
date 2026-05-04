@@ -41,6 +41,8 @@ export const countries = [
   },
 ];
 
+export type StaticCountry = (typeof countries)[number];
+
 export const nigeriaExplainers = [
   {
     title: "Did Nigeria have another flag before?",
@@ -88,6 +90,8 @@ export const nigeriaExplainers = [
   },
 ];
 
+export type StaticExplainer = (typeof nigeriaExplainers)[number];
+
 export const trendingItems = [
   {
     rank: "01",
@@ -122,6 +126,8 @@ export const trendingItems = [
     reason: "People are connecting flag symbols with independence history and football identity.",
   },
 ];
+
+export type StaticTrend = (typeof trendingItems)[number];
 
 export const timeline = [
   {

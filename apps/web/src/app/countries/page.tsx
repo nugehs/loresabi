@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { Card, Container, Eyebrow, PageShell } from "@/components/ui";
-import { countries } from "@/lib/content";
+import { getCountries } from "@/lib/api";
 
-export default function CountriesPage() {
+export default async function CountriesPage() {
+  const countries = await getCountries();
+
   return (
     <PageShell>
       <SiteHeader />

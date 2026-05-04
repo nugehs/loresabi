@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ColonialNigeriaFlag, NigeriaFlag } from "@/components/flags";
 import { SiteHeader } from "@/components/site-header";
 import { Card, Container, Eyebrow, PageShell, PrimaryLink, TextLink } from "@/components/ui";
-import { countries, nigeriaExplainers, trendingItems } from "@/lib/content";
+import { getCountries, getCountry, getTrends } from "@/lib/api";
 
 const explainerSections = [
   {
@@ -19,8 +19,13 @@ const explainerSections = [
   },
 ];
 
-export default function Home() {
-  const featured = nigeriaExplainers[0];
+export default async function Home() {
+  const [countries, nigeria, trendingItems] = await Promise.all([
+    getCountries(),
+    getCountry("nigeria"),
+    getTrends(),
+  ]);
+  const featured = nigeria?.explainers[0];
 
   return (
     <PageShell>
@@ -67,14 +72,14 @@ export default function Home() {
           <aside className="rounded-lg border border-[#d8ded6] bg-[#e8f2ec] p-6" aria-label="Featured explainer preview">
             <Card>
               <p className="text-sm font-bold uppercase tracking-wide text-[#00703c]">Featured explainer</p>
-              <h2 className="mt-3 text-3xl font-bold leading-tight">{featured.title}</h2>
+              <h2 className="mt-3 text-3xl font-bold leading-tight">{featured?.title ?? "Nigeria had a different flag before independence"}</h2>
               <div className="mt-6 flex gap-5">
                 <ColonialNigeriaFlag />
                 <NigeriaFlag />
               </div>
-              <p className="mt-5 text-base leading-7 text-[#3f4842]">{featured.shortAnswer}</p>
+              <p className="mt-5 text-base leading-7 text-[#3f4842]">{featured?.shortAnswer ?? "Before the green-white-green flag, colonial Nigeria used British ensign-style flags with a local badge."}</p>
               <div className="mt-6">
-                <TextLink href="/countries/nigeria/old-nigerian-flag">Read the simple version</TextLink>
+                <TextLink href={`/countries/nigeria/${featured?.slug ?? "old-nigerian-flag"}`}>Read the simple version</TextLink>
               </div>
             </Card>
           </aside>
@@ -92,9 +97,9 @@ export default function Home() {
           </div>
           <div className="mt-8 grid gap-5 lg:grid-cols-4">
             {trendingItems.map((item) => (
-              <Card key={`${item.country}-${item.topic}`} className="bg-[#fbfcf8]">
+              <Card key={`${item.country?.slug ?? "global"}-${item.topic}`} className="bg-[#fbfcf8]">
                 <div className="flex items-start justify-between gap-4">
-                  <p className="text-sm font-bold text-[#5d665f]">{item.country}</p>
+                  <p className="text-sm font-bold text-[#5d665f]">{item.country?.name ?? "Global"}</p>
                   <p className="rounded bg-[#e8f2ec] px-2 py-1 text-sm font-bold text-[#00703c]">{item.change}</p>
                 </div>
                 <h3 className="mt-4 text-2xl font-bold">{item.topic}</h3>

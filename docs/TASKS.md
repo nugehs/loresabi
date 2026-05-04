@@ -29,7 +29,7 @@
 
 - [x] Add database schema
 - [x] Add seeded content
-- [ ] Add dynamic search in web app
+- [x] Add dynamic search in web app
 - [x] Add static search page
 - [x] Add static trends page
 - [ ] Add AI draft generation
@@ -54,6 +54,7 @@
 - [x] Added Nigeria starter seed script
 - [x] Seeded local Postgres with Nigeria starter content
 - [x] Add database-backed API endpoints
+- [x] Wire web pages to database-backed API
 
 ## Working Notes
 

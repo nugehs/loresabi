@@ -1,10 +1,19 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { NigeriaFlag } from "@/components/flags";
 import { SiteHeader } from "@/components/site-header";
 import { Card, Container, Eyebrow, PageShell, PrimaryLink } from "@/components/ui";
-import { nigeriaExplainers, trendingItems } from "@/lib/content";
+import { getCountry } from "@/lib/api";
 
-export default function NigeriaPage() {
+export default async function NigeriaPage() {
+  const country = await getCountry("nigeria");
+
+  if (!country) {
+    notFound();
+  }
+
+  const featuredExplainer = country.explainers[0];
+
   return (
     <PageShell>
       <SiteHeader />
@@ -17,7 +26,7 @@ export default function NigeriaPage() {
           </div>
           <div className="max-w-3xl self-end">
             <p className="text-2xl font-semibold leading-9 text-[#26312b]">
-              The simple guide to Nigeria&apos;s history, culture, politics, pop culture, national symbols, and live curiosity signals.
+              {country.summary}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               {['Overview', 'History', 'Culture', 'Current affairs', 'Pop culture', 'Trends'].map((tab, index) => (
@@ -32,13 +41,13 @@ export default function NigeriaPage() {
         <Card>
           <h2 className="text-3xl font-bold">60-second Nigeria</h2>
           <p className="mt-5 text-lg leading-8 text-[#3f4842]">
-            Nigeria is Africa&apos;s most populous country, shaped by hundreds of ethnic groups, major pre-colonial kingdoms, British colonial rule, independence in 1960, oil politics, Nollywood, Afrobeats, and a huge diaspora.
+            {country.summary}
           </p>
         </Card>
         <Card className="bg-[#fbfcf8]">
           <h2 className="text-3xl font-bold">What people are searching</h2>
           <div className="mt-5 grid gap-4">
-            {trendingItems.filter((item) => item.country === 'Nigeria').map((item) => (
+            {country.trends.map((item) => (
               <div key={item.topic} className="border-t border-[#d8ded6] pt-4">
                 <div className="flex items-center justify-between gap-4">
                   <p className="font-bold">{item.rank}. {item.topic}</p>
@@ -58,10 +67,12 @@ export default function NigeriaPage() {
               <Eyebrow>Start with the basics</Eyebrow>
               <h2 className="mt-3 text-4xl font-bold tracking-tight">Nigeria explainers</h2>
             </div>
-            <PrimaryLink href="/countries/nigeria/old-nigerian-flag">Read featured explainer</PrimaryLink>
+            {featuredExplainer ? (
+              <PrimaryLink href={`/countries/nigeria/${featuredExplainer.slug}`}>Read featured explainer</PrimaryLink>
+            ) : null}
           </div>
           <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {nigeriaExplainers.map((explainer) => (
+            {country.explainers.map((explainer) => (
               <Card key={explainer.slug}>
                 <p className="text-sm font-bold text-[#00703c]">{explainer.category} • {explainer.readTime}</p>
                 <h3 className="mt-3 text-2xl font-bold">{explainer.title}</h3>
