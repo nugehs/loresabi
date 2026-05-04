@@ -531,6 +531,14 @@ export class ContentService {
       },
     });
 
+    if (countrySlug && !country) {
+      return {
+        query: normalizedQuery,
+        countries: [],
+        explainers: [],
+      };
+    }
+
     const [countries, explainers] = await Promise.all([
       this.prisma.country.findMany({
         where: {

@@ -8,14 +8,14 @@
 - Styling: Tailwind CSS
 - UI: custom components based on Figma, optionally shadcn/ui
 - Database: Postgres
-- DB provider: Supabase or Neon
+- DB provider: self-hosted Postgres first; Neon remains an optional managed production fallback
 - ORM: Prisma
 - Auth: Clerk or Supabase Auth later
 - Storage: Supabase Storage or Cloudflare R2
 - AI: provider-based API layer, DeepSeek active locally first, OpenAI optional later
 - Search: Postgres full-text first, vector search later
 - Jobs: BullMQ for NestJS workers, or Trigger.dev/Inngest if managed jobs are preferred
-- Hosting: Vercel for web, Render/Fly.io/Railway for API
+- Hosting: Coolify self-hosted Docker deployment for web, API, and Postgres
 - Analytics: PostHog
 - Payments: Stripe later
 
@@ -66,6 +66,15 @@ Services:
 - `postgres`: local Postgres database on port `5432`
 
 Use Docker for local parity when database-backed features begin. For early UI-only work, running `npm run dev:web` directly is also fine.
+
+## Location Context
+
+Coolify does not provide visitor country detection by itself. LoreSabi should use a layered approach:
+
+- Browser timezone and `navigator.language` for the immediate MVP.
+- Proxy country headers if available, for example Cloudflare `cf-ipcountry` or a custom `x-country-code`.
+- `DEFAULT_VIEWER_COUNTRY` as the fallback country.
+- A proper IP geolocation database later only if location-based trend routing becomes important enough.
 
 ## App Structure
 

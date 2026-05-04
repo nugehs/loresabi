@@ -28,7 +28,7 @@
 - [ ] Build explainer page UI
 - [ ] Build trends page UI
 - [ ] Add responsive mobile-first layout
-- [ ] Deploy first version to Vercel
+- [ ] Deploy first version through Coolify
 
 ## Phase 4: Database and Dynamic Content
 

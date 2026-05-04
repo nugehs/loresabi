@@ -246,6 +246,27 @@ export async function getCountry(slug: string): Promise<CountryDetail | null> {
     };
   }
 
+  const staticCountry = staticCountries.find((country) => country.slug === slug);
+
+  if (staticCountry) {
+    const country = mapCountry({
+      slug: staticCountry.slug,
+      name: staticCountry.name,
+      region: staticCountry.region,
+    });
+
+    return {
+      ...country,
+      status: staticCountry.status,
+      topics: [],
+      explainers: [],
+      images: [],
+      trends: trendingItems
+        .filter((item) => item.country === staticCountry.name)
+        .map((item, index) => mapStaticTrend(item, index, country)),
+    };
+  }
+
   return null;
 }
 

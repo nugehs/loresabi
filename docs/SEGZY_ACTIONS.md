@@ -4,8 +4,8 @@ These are the remaining things Codex cannot complete without your private accoun
 
 ## Required Before Public Deployment
 
-- [ ] Create production Postgres database. Recommended for now: Neon, because it is simple with Vercel and has a generous serverless flow.
-- [ ] Add `DATABASE_URL` to Vercel and any API hosting environment.
+- [ ] Create or confirm the Coolify Postgres service.
+- [ ] Add `DATABASE_URL` to the Coolify API service.
 - [x] Add local DeepSeek key for draft generation.
 - [ ] Add these AI variables to production when deploying:
   - `AI_PROVIDER=deepseek`
@@ -13,8 +13,9 @@ These are the remaining things Codex cannot complete without your private accoun
   - `DEEPSEEK_BASE_URL=https://api.deepseek.com`
   - `DEEPSEEK_MODEL=deepseek-v4-flash`
 - [ ] Create an OpenAI API key later only if switching provider or adding a higher-quality review pass.
-- [ ] Create or connect the Vercel project.
+- [ ] Create or connect the Coolify web and API services.
 - [ ] Add `NEXT_PUBLIC_API_URL` for the production API URL.
+- [ ] Set `DEFAULT_VIEWER_COUNTRY`, for example `GB`.
 - [ ] Point `loresabi.com` DNS when the first public deployment is ready.
 
 ## Parked: Paid Features

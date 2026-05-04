@@ -34,7 +34,7 @@
 ## Waiting On Segzy
 
 - [ ] Create production Neon database and provide `DATABASE_URL`
-- [ ] Create Vercel project and add environment variables
+- [ ] Create Coolify apps/services and add environment variables
 - [ ] Point `loresabi.com` DNS when ready
 
 ## Parked
@@ -69,6 +69,8 @@
 - [x] Add internal editorial queue for Nigeria explainers
 - [x] Add AI draft desk with OpenAI-ready fallback
 - [x] Add DeepSeek-first draft generation with OpenAI optional later
+- [x] Add dynamic country routes for Ghana/UK/other static country profiles
+- [x] Add browser-first local country context detection
 - [x] Add attribution report
 - [x] Add internal-search trend ingestion
 - [x] Add temporary email-based saved items flow
